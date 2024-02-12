@@ -1,7 +1,9 @@
 import {
+  getAuth,
   EmailAuthProvider,
   GoogleAuthProvider,
   reauthenticateWithCredential,
+  createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithPopup,
   signOut,
@@ -21,7 +23,8 @@ async function doSocialSignIn(provider, auth) {
 
 
 async function doPasswordReset(email) {
-  await sendPasswordResetEmail(email);
+  let auth = getAuth();
+  await sendPasswordResetEmail(auth, email);
 }
 
 async function doPasswordUpdate(password) {
@@ -29,7 +32,8 @@ async function doPasswordUpdate(password) {
 }
 
 async function doSignOut() {
-  await signOut();
+  let auth = getAuth();
+  await signOut(auth);
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {

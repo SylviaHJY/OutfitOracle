@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./firebase/Auth";
+import Login from "./components/Login";
+import SignUpPage from "./components/SignUp";
+import Home from "./components/Home";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebase";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+    <Router>
+      <div className="App">
+        <div className="App-body">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/login"
+              element={ <Login />}
+            />
+            <Route
+              path="/register"
+              element={<SignUpPage />}
+            />
+          </Routes>
+        </div>
+        <footer className="App-footer"></footer>
+      </div>
+    </Router>
+    </AuthProvider>
   );
 }
 

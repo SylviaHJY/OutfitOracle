@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export const AuthContext = React.createContext(null);
 
@@ -8,12 +8,21 @@ export const AuthContext = React.createContext(null);
 //AuthProvider是一个React组件，它接受任何子组件作为children。这个组件的目的是监听Firebase的认证状态变化，并将当前用户状态通过AuthContext.Provider提供给所有子组件。
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const auth = getAuth();
 
   useEffect(() => {
-    onAuthStateChanged(setCurrentUser);
+    // 正确地传递 `auth` 对象和回调函数给 `onAuthStateChanged`
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+
+    // 清理订阅
+    return () => unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={currentUser}>
+      {children}
+    </AuthContext.Provider>
   );
 };
