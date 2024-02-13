@@ -79,7 +79,7 @@ const MyCloset = () => {
       </Box>
 
       <Box sx={{ display: 'flex', flexGrow: 1 }}>
-        <Box sx={{ width: '15%', borderRight: 1, borderColor: 'divider', overflowY: 'auto' }}>
+        <Box sx={{ width: '15%', borderRight: 1, borderColor: 'divider', overflowY: 'auto',position: 'sticky', top: 0, height: 'calc(100vh - 48px)' }}>
           <List>
             {/* count */}
             <ListItemButton selected={selectedCategory === 'All clothes'} onClick={() => handleListItemClick('All clothes')}>
