@@ -110,6 +110,7 @@ const Home = () => {
               }
             }} style={{background: "none", border: "none", cursor: "pointer"}}>
               <option value="">{`Welcome, ${currentUser.displayName || 'User'}`}</option>
+              <option value="myCloset">Account</option>
               <option value="myCloset">My Closet</option>
               <option value="signOut">Sign Out</option>
             </select>
@@ -127,10 +128,15 @@ const Home = () => {
       <select value={category} onChange={(e) => setCategory(e.target.value)} required>
       <option value="">Select Category</option>
       <option value="T-shirts">T-shirts</option>
+      <option value="Longsleeves">Longsleeves</option>
+      <option value="Tank tops">Tank tops</option>
+      <option value="Hoodies">Hoodies</option>
       <option value="Blouses">Blouses</option>
+      <option value="Blazers & Vests">Blazers & Vests</option>
       <option value="Sweaters">Sweaters</option>
       <option value="Jeans">Jeans</option>
       <option value="Pants">Pants</option>
+      <option value="Agency pant">Agency pant</option>
       <option value="Shorts">Shorts</option>
       <option value="Jackets">Jackets</option>
       <option value="Coats">Coats</option>

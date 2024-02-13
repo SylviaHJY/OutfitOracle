@@ -5,6 +5,7 @@ import { AuthProvider } from "./firebase/Auth";
 import Login from "./components/Login";
 import SignUpPage from "./components/SignUp";
 import Home from "./components/Home";
+import MyCloset from "./components/MyCloset";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
@@ -25,6 +26,10 @@ function App() {
             <Route
               path="/register"
               element={<SignUpPage />}
+            />
+            <Route
+              path="/myCloset"
+              element={<MyCloset />}
             />
           </Routes>
         </div>
