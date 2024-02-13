@@ -86,8 +86,6 @@ const Home = () => {
       // set last uploaded file for display
       setLastUploadedFile({ category, name: file.name });
       alert("File uploaded and info saved to Firestore successfully!");
-      // Reset the category to default and clear the file input after successful upload
-      setCategory('');
       setFile(null);
       // Reset file input visually by clearing its value
       document.getElementById('fileInput').value = '';

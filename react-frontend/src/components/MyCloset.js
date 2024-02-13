@@ -11,11 +11,13 @@ import CardMedia from '@mui/material/CardMedia';
 import { useNavigate } from 'react-router-dom';
 import { doSignOut } from '../firebase/FirebaseFunctions';
 
+// 更新衣物分类
 const categories = [
-  "T-shirts", "Blouses", "Sweaters", "Jeans", "Pants", "Shorts",
-  "Jackets", "Coats", "Overcoats", "Skirts", "Suits", "Dresses",
-  "Shoes", "Boots", "Leather shoes", "Sandals", "Sneakers", "Heels",
-  "Hats", "Bags", "Accessories"
+  "T-shirts", "Longsleeves", "Tank tops", "Hoodies", "Blouses", 
+  "Blazers & Vests", "Sweaters", "Jeans", "Pants", "Agency pant", 
+  "Shorts", "Jackets", "Coats", "Overcoats", "Skirts", 
+  "Suits", "Dresses", "Shoes", "Boots", "Leather shoes", 
+  "Sandals", "Sneakers", "Heels", "Hats", "Bags", "Accessories"
 ];
 
 const MyCloset = () => {
@@ -51,6 +53,11 @@ const MyCloset = () => {
     setSelectedCategory(category);
   };
 
+  // Calculate the number of items in a category
+  const countItemsInCategory = (category) => {
+    return clothes.filter(clothe => category === 'All clothes' || clothe.category === category).length;
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '80vh', width: '100%' }}>
       <Box sx={{ alignSelf: 'flex-end', p: 1 }}>
@@ -58,11 +65,14 @@ const MyCloset = () => {
           <select onChange={(e) => {
               if (e.target.value === 'myCloset') {
                 navigate('/myCloset');
+              } else if (e.target.value === 'home') {
+                navigate('/');
               } else if (e.target.value === 'signOut') {
                 handleSignOut();
               }
             }} style={{ background: "none", border: "none", cursor: "pointer" }}>
               <option value="myCloset">My Closet</option>
+              <option value="home">Home</option> 
               <option value="signOut">Sign Out</option>
           </select>
         )}
@@ -71,42 +81,47 @@ const MyCloset = () => {
       <Box sx={{ display: 'flex', flexGrow: 1 }}>
         <Box sx={{ width: '15%', borderRight: 1, borderColor: 'divider', overflowY: 'auto' }}>
           <List>
+            {/* count */}
             <ListItemButton selected={selectedCategory === 'All clothes'} onClick={() => handleListItemClick('All clothes')}>
-              <ListItemText primary="All Clothes" />
+              <ListItemText primary={`All Clothes (${countItemsInCategory('All clothes')})`} />
             </ListItemButton>
-            {categories.map((category) => (
-              clothes.some(clothe => clothe.category === category) && (
-                <ListItemButton key={category} selected={selectedCategory === category} onClick={() => handleListItemClick(category)}>
-                  <ListItemText primary={category} />
-                </ListItemButton>
-              )
-            ))}
+            {categories.map((category) => {
+              const itemCount = countItemsInCategory(category);
+              return (
+                clothes.some(clothe => clothe.category === category) && (
+                  <ListItemButton key={category} selected={selectedCategory === category} onClick={() => handleListItemClick(category)}>
+                    <ListItemText primary={`${category} (${itemCount})`} />
+                  </ListItemButton>
+                )
+              );
+            })}
           </List>
         </Box>
 
         <Box sx={{ flex: 6, overflow: 'auto', padding: 2 }}>
           <Grid container spacing={2}>
             {clothes.filter(clothe => selectedCategory === 'All clothes' || clothe.category === selectedCategory).map((clothe, index) => (
-              <Grid item xs={6} sm={2} md={2} lg={2} key={index}>
-                <Card sx={{ maxWidth: 345, height: '100%' }}>
-                  <CardMedia
-                    component="img"
-                    height="420"
-                    image={clothe.url}
-                    alt={clothe.name}
-                    sx={{ objectFit: 'cover' }} // This ensures your images cover the area, but might crop them
-                  />
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Box>
+        <Grid item xs={6} sm={2} md={2} lg={2} key={index}>
+        <Card sx={{ maxWidth: 345, height: '100%' }}>
+          <CardMedia
+          component="img"
+          height="420"
+          image={clothe.url}
+          alt={clothe.name}
+          sx={{ objectFit: 'cover' }} // This ensures your images cover the area, but might crop them
+          />
+        </Card>
+        </Grid>
+        ))}
+      </Grid>
     </Box>
+    </Box>
+  </Box>
   );
-};
+  };
 
 export default MyCloset;
+
 
 
 
