@@ -15,6 +15,9 @@ const Home = () => {
   const [category, setCategory] = useState('');
   const navigate = useNavigate(); // useNavigate hook
   const [lastUploadedFile, setLastUploadedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null); // for previewing image
+  const [processedFile, setProcessedFile] = useState(null); // for uploading to Cloud Storage
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
@@ -30,13 +33,38 @@ const Home = () => {
     alert("You have been signed out");
   };
 
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && ["image/jpeg", "image/png", "image/jpg", "image/bmp", "image/webp"].includes(selectedFile.type)) {
       setFile(selectedFile);
+      setProcessedFile(null); // reset processed file
+      setUploadSuccess(false); // reset upload success
     } else {
       alert("Unsupported file type. Please select an image.");
       setFile(null);
+    }
+  };
+  
+  // remove background from image
+  const handleConfirm = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch("http://localhost:8000/remove-bg", {
+          method: "POST",
+          body: formData,
+        });
+
+        const blobData = await response.blob();
+        setProcessedFile(new File([blobData], file.name, { type: "image/png" }));
+        setPreviewUrl(URL.createObjectURL(blobData));
+      } catch (error) {
+        console.error("Error removing background:", error);
+        alert("Error removing background.");
+      }
     }
   };
 
@@ -47,6 +75,7 @@ const Home = () => {
     return docSnap.exists();
   };
 
+  // upload file after user has confirmed the processed image
   const handleUpload = async () => {
     if (!currentUser) {
       alert("Please log in to upload files.");
@@ -58,16 +87,16 @@ const Home = () => {
       return;
     }
   
-    if (!file) {
-      alert("Please choose a file to upload.");
+    if (!processedFile) {
+      alert("No processed file to upload.");
       return;
     }
 
     const exists = await checkDocumentExists(currentUser.uid);
-    const storageRef = ref(storage, `clothes/${currentUser.uid}/${category}/${file.name}`);
+    const storageRef = ref(storage, `clothes/${currentUser.uid}/${category}/${processedFile.name}`);
 
     try{
-      const uploadTaskSnapshot = await uploadBytes(storageRef, file);
+      const uploadTaskSnapshot = await uploadBytes(storageRef, processedFile);
       const url = await getDownloadURL(uploadTaskSnapshot.ref);
       
       // update or create document in Firestore
@@ -76,7 +105,7 @@ const Home = () => {
       const newClothingItem = {
         url,
         category,
-        name: file.name,
+        name: processedFile.name,
         timestamp: new Date()
       };
       
@@ -84,10 +113,11 @@ const Home = () => {
       await setDoc(closetRef, { items: exists ? arrayUnion(newClothingItem) : [newClothingItem] }, { merge: true });
 
       // set last uploaded file for display
-      setLastUploadedFile({ category, name: file.name });
+      setLastUploadedFile({ category, name: processedFile.name });
+      setUploadSuccess(true); // set upload success to true
       alert("File uploaded and info saved to Firestore successfully!");
-      setFile(null);
       // Reset file input visually by clearing its value
+      setFile(null);
       document.getElementById('fileInput').value = '';
     } catch (error) {
       console.error("Error uploading file or saving file info to Firestore:", error);
@@ -154,7 +184,7 @@ const Home = () => {
       </select>
       <p>Please upload your clothes</p>
       <input type="file" onChange={handleFileChange} id="fileInput"/>
-      <button onClick={handleUpload}>Upload</button>
+      {file && <button onClick={handleConfirm}>Confirm Image</button>}
       <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
       <div>
         {lastUploadedFile && (
@@ -163,6 +193,15 @@ const Home = () => {
           </p>
         )}
       </div>
+      <div>
+        {previewUrl && (
+          <>
+            <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '600px' }}/>
+            {processedFile && <button onClick={handleUpload}>Save to Closet</button>}
+          </>
+        )}
+      </div>
+      {uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
     </div>
   );
 };
