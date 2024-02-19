@@ -18,6 +18,7 @@ const Home = () => {
   const [previewUrl, setPreviewUrl] = useState(null); // for previewing image
   const [processedFile, setProcessedFile] = useState(null); // for uploading to Cloud Storage
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [removeBgProcessing, setRemoveBgProcessing] = useState(''); // for showing processing status
 
   useEffect(() => {
     const auth = getAuth();
@@ -37,9 +38,14 @@ const Home = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && ["image/jpeg", "image/png", "image/jpg", "image/bmp", "image/webp"].includes(selectedFile.type)) {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null); // reset preview url
+      }  
       setFile(selectedFile);
       setProcessedFile(null); // reset processed file
       setUploadSuccess(false); // reset upload success
+      setRemoveBgProcessing(''); // reset processing status
     } else {
       alert("Unsupported file type. Please select an image.");
       setFile(null);
@@ -49,6 +55,7 @@ const Home = () => {
   // remove background from image
   const handleConfirm = async () => {
     if (file) {
+      setRemoveBgProcessing('Removing image background...'); // set processing status
       const formData = new FormData();
       formData.append('file', file);
 
@@ -61,8 +68,10 @@ const Home = () => {
         const blobData = await response.blob();
         setProcessedFile(new File([blobData], file.name, { type: "image/png" }));
         setPreviewUrl(URL.createObjectURL(blobData));
+        setRemoveBgProcessing('Background removal completed'); // reset processing status
       } catch (error) {
         console.error("Error removing background:", error);
+        setRemoveBgProcessing('Failed to remove background');
         alert("Error removing background.");
       }
     }
@@ -186,12 +195,15 @@ const Home = () => {
       <input type="file" onChange={handleFileChange} id="fileInput"/>
       {file && <button onClick={handleConfirm}>Confirm Image</button>}
       <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
-      <div>
+      {/* <div>
         {lastUploadedFile && (
           <p style={{ color: 'red', fontSize: '12px' }}>
             Last uploaded file: ({lastUploadedFile.category}), {lastUploadedFile.name}
           </p>
         )}
+      </div> */}
+      <div>
+        {removeBgProcessing && <p style={{ color: 'red', fontSize: '12px'}}>{removeBgProcessing}</p>}
       </div>
       <div>
         {previewUrl && (
