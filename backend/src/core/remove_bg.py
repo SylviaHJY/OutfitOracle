@@ -6,7 +6,6 @@ class RemoveBgService:
         result = remove(image_data)
         return result  # return image content
     
-
 # function 2: remove background from image using url
 # class RemoveBgService: 
 #     def __init__(self):
