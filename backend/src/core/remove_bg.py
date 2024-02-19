@@ -1,17 +1,25 @@
-import requests
+from rembg import remove
 
-class RemoveBgService: 
-    def __init__(self):
-        # rembg server url
-        self.rembg_server_url = "http://localhost:7001/api/remove"
+class RemoveBgService:
+    def remove_background(self, image_data: bytes):
+        # remove background from image
+        result = remove(image_data)
+        return result  # return image content
+    
 
-    def remove_background(self, image_url: str):
-        # Send GET request to rembg server with image_url as a query parameters
-        response = requests.get(self.rembg_server_url, params={"url": image_url})
-        if response.status_code == 200:
-            return response.content  # return image content
-        else:
-            raise Exception(f"Error: {response.status_code}, {response.text}")
+# function 2: remove background from image using url
+# class RemoveBgService: 
+#     def __init__(self):
+#         # rembg server url
+#         self.rembg_server_url = "http://localhost:7001/api/remove"
+
+#     def remove_background(self, image_url: str):
+#         # Send GET request to rembg server with image_url as a query parameters
+#         response = requests.get(self.rembg_server_url, params={"url": image_url})
+#         if response.status_code == 200:
+#             return response.content  # return image content
+#         else:
+#             raise Exception(f"Error: {response.status_code}, {response.text}")
         
 # from PIL import Image
 # import requests
@@ -42,6 +50,7 @@ class RemoveBgService:
 #             raise Exception(f"Error: {response.status_code}, {response.text}")
 
 
+    # function 3: remove background from image using remove.bg API
     #from dotenv import load_dotenv
     #import os
     # use remove bg api to remove background from image
