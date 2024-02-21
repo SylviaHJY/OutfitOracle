@@ -57,16 +57,25 @@ const Home = () => {
     if (file) {
       setRemoveBgProcessing('Removing image background...'); // set processing status
       const formData = new FormData();
-      formData.append('file', file);
-
+      formData.append('size', 'auto');
+      formData.append('image_file', file, file.name);
+  
       try {
-        const response = await fetch("http://localhost:8000/remove-bg", {
+        const response = await fetch("https://api.remove.bg/v1.0/removebg", {
           method: "POST",
           body: formData,
+          headers: {
+            'X-Api-Key': process.env.REACT_APP_REMOVE_BG_API_KEY,
+          },
+         // encoding: null
         });
-
+  
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+  
         const blobData = await response.blob();
-        setProcessedFile(new File([blobData], file.name, { type: "image/png" }));
+        setProcessedFile(new File([blobData], file.name, { type: 'image/png' }));
         setPreviewUrl(URL.createObjectURL(blobData));
         setRemoveBgProcessing('Background removal completed'); // reset processing status
       } catch (error) {
@@ -76,6 +85,7 @@ const Home = () => {
       }
     }
   };
+  
 
   const checkDocumentExists = async (userId) => {
     const db = getFirestore();
