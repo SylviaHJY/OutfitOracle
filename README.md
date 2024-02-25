@@ -13,7 +13,7 @@ Follow these steps to get the project up and running on your local machine:
    Use Git to pull the code to your local machine:
    
    ```bash
-   git pull <repository-url>
+   git pull https://github.com/SylviaHJY/Wardrobe-Wizard.git
 
 2. **Open a Terminal in the React Frontend Directory，Navigate to the root directory of the react-frontend part of the project.**
    Install the required packages using npm:  
