@@ -59,6 +59,6 @@ export const getWeatherIcon = (weatherCode) => {
     case '8000':
       return <WiStormShowers size={48} color='#636363'/>;
     default:
-      return <WiDaySunny size={48} color='#636363'/>;
+      return <WiDaySunny size={48} color='#636363' />;
   }
 };
