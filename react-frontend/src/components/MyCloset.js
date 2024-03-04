@@ -10,6 +10,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { useNavigate } from 'react-router-dom';
 import { doSignOut } from '../firebase/FirebaseFunctions';
+import WeatherForecast from './WeatherForecast';
 
 // 更新衣物分类
 const categories = [
@@ -60,6 +61,7 @@ const MyCloset = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '80vh', width: '100%' }}>
+      <WeatherForecast />
       <Box sx={{ alignSelf: 'flex-end', p: 1 }}>
         {currentUser && (
           <select onChange={(e) => {
