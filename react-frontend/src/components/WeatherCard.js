@@ -4,7 +4,8 @@ import { getWeatherIcon } from '../weatherHelper';
 
 const WeatherCard = ({ dayWeather }) => {
   const { temperatureMin, temperatureMax, weatherCodeMax } = dayWeather.values;
-  const weatherIcon = getWeatherIcon(weatherCodeMax.toString()); 
+  const weatherIcon = getWeatherIcon(weatherCodeMax.toString());
+  console.log(weatherCodeMax.toString()); // 添加这行来检查天气代码
 
   console.log('Date string:', dayWeather.time); // 添加这行来检查日期字符串
 
