@@ -4,11 +4,13 @@
 
 This project is tested on **Google Chrome**. We highly recommend you run this project on the same browser for the best experience.
 You will need to have these techniques available on your computer:
--Python (at least version 3.9 or above)
--pip
--Node.js
--npm
--React
+- Python (at least version 3.9 or above)
+  You can download Python from the official Python website.
+- pip
+- Node.js
+  You can download Node.js from the official Node.js website.
+- npm
+- React
 
 ## Getting Started
 
