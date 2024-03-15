@@ -61,13 +61,9 @@ const Home = () => {
       formData.append('image_file', file, file.name);
   
       try {
-        const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+        const response = await fetch("http://127.0.0.1:5000/remove-bg", {
           method: "POST",
           body: formData,
-          headers: {
-            'X-Api-Key': process.env.REACT_APP_REMOVE_BG_API_KEY,
-          },
-         // encoding: null
         });
   
         if (!response.ok) {
