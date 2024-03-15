@@ -10,54 +10,73 @@ Follow these steps to get the project up and running on your local machine:
 
 1. **Clone the Repository**
 
-   Use Git to pull the code to your local machine:
+   Use Git to clone the code to your local machine:
    
    ```bash
-   git pull https://github.com/SylviaHJY/Wardrobe-Wizard.git
+   git clone https://github.com/SylviaHJY/Wardrobe-Wizard.git
+   ```
 
-2. 
+2. **Open a Terminal in the Backend Directory**
 
-3.  **Open a Terminal in the backend Directory.** 
    Install the required packages using pip:
-    ```bash
-    pip install requirements.txt
-
-4.  **Make sure you have .flaskenv file in the backend root directory.** Normally, it has been uploaded to our GitHub repo under our backend root directory, if you don't have it, you will need to add .flaskenv file manually.
-    Add this two config code to your .flaskenv file:
-     ```bash
-     FLASK_APP=main.py
-     FLASK_ENV=development
-     
-   So that you will be able to run flask (our backend supported by Flask) by this command:
-    ```bash
-     flask run
-
-   Alternatively, you could run the flask project by those command in the terminal without having .flaskenv file:
-   for Windows:
-     ```bash
-     set FLASK_APP=main.py
-     set FLASK_ENV=development  
-     flask run
-     
-   for Unix/Linux/macOS：
-    ```bash
-      export FLASK_APP=main.py
-      export FLASK_ENV=development
-      flask run
-
-##Notice: Remember to delete all __pycache__ (under src, core, and router files) after everytime you terminate the terminal, so that you won't get errors once the code has been updated. 
-
-5.  **Open a Terminal in the React Frontend Directory.**
-   Install the required packages using npm:  
    
-    ```bash
-    npm install
-6. Add .env file in the frontend root directory.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-7. **Run the project locally with the following command:**
-    ```bash
-    npm start
+3. **Make Sure You Have a .flaskenv File in the Backend Root Directory**
 
-8. **Access the Project**
+   Normally, it has been uploaded to our GitHub repo under our backend root directory. If you don't have it, you will need to add a `.flaskenv` file manually.
+   
+   Add these two config codes to your `.flaskenv` file:
+   
+   ```bash
+   FLASK_APP=main.py
+   FLASK_ENV=development
+   ```
+   
+   So that you will be able to run Flask (our backend supported by Flask) by this command:
+   
+   ```bash
+   flask run
+   ```
+   
+   Alternatively, you could run the Flask project by these commands in the terminal without having a `.flaskenv` file:
+   
+   For Windows:
+   
+   ```bash
+   set FLASK_APP=main.py
+   set FLASK_ENV=development  
+   flask run
+   ```
+   
+   For Unix/Linux/macOS:
+   
+   ```bash
+   export FLASK_APP=main.py
+   export FLASK_ENV=development
+   flask run
+   ```
+   
+   **Note**: Remember to delete all `__pycache__` directories (under src, core, and router files) after every time you terminate the terminal, so that you won't get errors once the code has been updated. 
 
-The project will be running at https://localhost:3000. Open this URL in Google Chrome to view the project.
+4. **Open a Terminal in the React Frontend Directory**
+
+   Install the required packages using npm:
+   
+   ```bash
+   npm install
+   ```
+
+5. **Add a .env File in the Frontend Root Directory**
+
+6. **Run the Project Locally With the Following Command:**
+
+   ```bash
+   npm start
+   ```
+
+7. **Access the Project**
+
+   The project will be running at http://localhost:3000. Open this URL in Google Chrome to view the project.
