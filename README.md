@@ -3,6 +3,12 @@
 ## Notice
 
 This project is tested on **Google Chrome**. We highly recommend you run this project on the same browser for the best experience.
+You will need to have these techniques available on your computer:
+-Python (at least version 3.9 or above)
+-pip
+-Node.js
+-npm
+-React
 
 ## Getting Started
 
@@ -69,8 +75,7 @@ Follow these steps to get the project up and running on your local machine:
    npm install
    ```
 
-5. **Add a .env File in the Frontend Root Directory**
-
+5. **Add a .env File in the Frontend Root Directory** Connact developers for necessary api keys if you have Authorization and Authentication of this project.
 6. **Run the Project Locally With the Following Command:**
 
    ```bash
