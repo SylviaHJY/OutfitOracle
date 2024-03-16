@@ -1,4 +1,5 @@
 import{
+  
   WiDaySunny,
   WiDaySunnyOvercast,
   WiDayCloudyHigh,
@@ -16,6 +17,8 @@ import{
   WiHail,
   WiStormShowers,
 } from 'react-icons/wi';
+/*PDS CHANGE
+import React from 'react';*/
 
 export const getWeatherIcon = (weatherCode) => {
   switch (weatherCode) {

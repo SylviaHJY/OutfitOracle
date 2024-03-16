@@ -11,6 +11,7 @@ import { auth } from "./firebase/firebase";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
+
 function App() {
   return (
     <AuthProvider>
