@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../firebase/Auth";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
@@ -6,6 +7,9 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getDownloadURL } from "firebase/storage";
 import { doSignOut } from "../firebase/FirebaseFunctions";
+
+// import the home page css
+import "./Home.css";
 
 const Home = () => {
   const currentUser = useContext(AuthContext);
@@ -141,8 +145,9 @@ const Home = () => {
   };
 
   return (
-    <div>
-        <div style={{float: "right", marginRight: "20px"}}>
+    <section className="container">
+        <header className="header"> 
+        <div className="loginMenu">
         {currentUser ? (
           <>
             <select onChange={(e) => {
@@ -151,7 +156,7 @@ const Home = () => {
               } else if (e.target.value === 'signOut') {
                 handleSignOut();
               }
-            }} style={{background: "none", border: "none", cursor: "pointer"}}>
+            }} /*style={{background: "none", border: "none", cursor: "pointer"}}*/>
               <option value="">{`Welcome, ${currentUser.displayName || 'User'}`}</option>
               <option value="myCloset">Account</option>
               <option value="myCloset">My Closet</option>
@@ -166,61 +171,65 @@ const Home = () => {
           </>
         )}
       </div>
-      <h1>Welcome to your AI Closet</h1>
-      <p>Please select a category and upload your clothes</p>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-      <option value="">Select Category</option>
-      <option value="T-shirts">T-shirts</option>
-      <option value="Longsleeves">Longsleeves</option>
-      <option value="Tank tops">Tank tops</option>
-      <option value="Hoodies">Hoodies</option>
-      <option value="Blouses">Blouses</option>
-      <option value="Blazers & Vests">Blazers & Vests</option>
-      <option value="Sweaters">Sweaters</option>
-      <option value="Jeans">Jeans</option>
-      <option value="Pants">Pants</option>
-      <option value="Agency pant">Agency pant</option>
-      <option value="Shorts">Shorts</option>
-      <option value="Jackets">Jackets</option>
-      <option value="Coats">Coats</option>
-      <option value="Overcoats">Overcoats</option>
-      <option value="Skirts">Skirts</option>
-      <option value="Suits">Suits</option>
-      <option value="Dresses">Dresses</option>
-      <option value="Shoes">Shoes</option>
-      <option value="Boots">Boots</option>
-      <option value="Leather shoes">Leather shoes</option>
-      <option value="Sandals">Sandals</option>
-      <option value="Sneakers">Sneakers</option>
-      <option value="Heels">Heels</option>
-      <option value="Hats">Hats</option>
-      <option value="Bags">Bags</option>
-      <option value="Accessories">Accessories</option>
-      </select>
-      <p>Please upload your clothes</p>
-      <input type="file" onChange={handleFileChange} id="fileInput"/>
-      {file && <button onClick={handleConfirm}>Confirm Image</button>}
-      <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
-      {/* <div>
-        {lastUploadedFile && (
-          <p style={{ color: 'red', fontSize: '12px' }}>
-            Last uploaded file: ({lastUploadedFile.category}), {lastUploadedFile.name}
-          </p>
-        )}
-      </div> */}
-      <div>
-        {removeBgProcessing && <p style={{ color: 'red', fontSize: '12px'}}>{removeBgProcessing}</p>}
-      </div>
-      <div>
-        {previewUrl && (
-          <>
-            <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '600px' }}/>
-            {processedFile && <button onClick={handleUpload}>Save to Closet</button>}
-          </>
-        )}
-      </div>
-      {uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
-    </div>
+        </header>
+        <div className="containerMiddle">
+          <h1>Welcome to your  Closet</h1>
+          <p>Please select a category and upload your clothes</p>
+          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="">Select Category</option>
+          <option value="T-shirts">T-shirts</option>
+          <option value="Longsleeves">Longsleeves</option>
+          <option value="Tank tops">Tank tops</option>
+          <option value="Hoodies">Hoodies</option>
+          <option value="Blouses">Blouses</option>
+          <option value="Blazers & Vests">Blazers & Vests</option>
+          <option value="Sweaters">Sweaters</option>
+          <option value="Jeans">Jeans</option>
+          <option value="Pants">Pants</option>
+          <option value="Agency pant">Agency pant</option>
+          <option value="Shorts">Shorts</option>
+          <option value="Jackets">Jackets</option>
+          <option value="Coats">Coats</option>
+          <option value="Overcoats">Overcoats</option>
+          <option value="Skirts">Skirts</option>
+          <option value="Suits">Suits</option>
+          <option value="Dresses">Dresses</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Boots">Boots</option>
+          <option value="Leather shoes">Leather shoes</option>
+          <option value="Sandals">Sandals</option>
+          <option value="Sneakers">Sneakers</option>
+          <option value="Heels">Heels</option>
+          <option value="Hats">Hats</option>
+          <option value="Bags">Bags</option>
+          <option value="Accessories">Accessories</option>
+          </select>
+          <p>Please upload your clothes</p>
+          <input type="file" onChange={handleFileChange} id="fileInput"/>
+          {file && <button onClick={handleConfirm}>Confirm Image</button>}
+          <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
+          {/* <div>
+            {lastUploadedFile && (
+              <p style={{ color: 'red', fontSize: '12px' }}>
+                Last uploaded file: ({lastUploadedFile.category}), {lastUploadedFile.name}
+              </p>
+            )}
+          </div> */}
+          <div>
+            {removeBgProcessing && <p style={{ color: 'red', fontSize: '12px'}}>{removeBgProcessing}</p>}
+          </div>
+          <div>
+            {previewUrl && (
+              <>
+                <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '600px' }}/>
+                {processedFile && <button onClick={handleUpload}>Save to Closet</button>}
+              </>
+            )}
+          </div>
+          {uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
+        </div>
+        <footer className="footer">Footer Content Will Go Here</footer>
+    </section>
   );
 };
 
