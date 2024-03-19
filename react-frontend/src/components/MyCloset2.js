@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getFirestore, doc, getDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { AuthContext } from "../firebase/Auth";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -11,6 +11,9 @@ import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import WeatherForecast from "./WeatherForecast";
+
+// imports the specific css page
+import "./MyCloset.css";
 
 // 更新衣物分类
 const categories = [
@@ -75,19 +78,6 @@ const MyCloset = () => {
     setSelectedCategory(category);
   };
 
-  //delete a clothing item from the database and adjust the list
-  const deleteClothingItem = async (itemId) => {
-    const db = getFirestore();
-    const docRef = doc(db, "closets", currentUser.uid);
-
-    await deleteDoc(docRef, {
-      items: clothes.filter((item) => item.id !== itemId),
-    });
-    setClothes((prevClothes) =>
-      prevClothes.filter((item) => item.id !== itemId)
-    );
-  };
-
   // Calculate the number of items in a category
   const countItemsInCategory = (category) => {
     return clothes.filter(
@@ -103,9 +93,10 @@ const MyCloset = () => {
         height: "80vh",
         width: "100%",
       }}
+      className="my-closet"
     >
-      <WeatherForecast />
-      <Box sx={{ alignSelf: "flex-end", p: 1 }}>
+      <WeatherForecast className="weather-forecast" />
+      <Box sx={{ alignSelf: "flex-end", p: 1 }} className="header">
         {currentUser && (
           <select
             onChange={(e) => {
@@ -118,6 +109,7 @@ const MyCloset = () => {
               }
             }}
             style={{ background: "none", border: "none", cursor: "pointer" }}
+            className="select-dropdown"
           >
             <option value="myCloset">My Closet</option>
             <option value="home">Home</option>
@@ -137,12 +129,14 @@ const MyCloset = () => {
             top: 0,
             height: "calc(100vh - 48px)",
           }}
+          className="sidebar"
         >
-          <List>
+          <List className="category-list">
             {/* count */}
             <ListItemButton
               selected={selectedCategory === "All clothes"}
               onClick={() => handleListItemClick("All clothes")}
+              className="category-item"
             >
               <ListItemText
                 primary={`All Clothes (${countItemsInCategory("All clothes")})`}
@@ -156,6 +150,7 @@ const MyCloset = () => {
                     key={category}
                     selected={selectedCategory === category}
                     onClick={() => handleListItemClick(category)}
+                    className="category-item"
                   >
                     <ListItemText primary={`${category} (${itemCount})`} />
                   </ListItemButton>
@@ -165,7 +160,10 @@ const MyCloset = () => {
           </List>
         </Box>
 
-        <Box sx={{ flex: 6, overflow: "auto", padding: 2 }}>
+        <Box
+          sx={{ flex: 6, overflow: "auto", padding: 2 }}
+          className="item-grid"
+        >
           <Grid container spacing={2}>
             {clothes
               .filter(
@@ -175,7 +173,7 @@ const MyCloset = () => {
               )
               .map((clothe, index) => (
                 <Grid item xs={6} sm={2} md={2} lg={2} key={index}>
-                  <Card sx={{ maxWidth: 345, height: "100%" }}>
+                  <Card className="item-card">
                     <CardMedia
                       component="img"
                       height="420"
@@ -183,9 +181,6 @@ const MyCloset = () => {
                       alt={clothe.name}
                       sx={{ objectFit: "cover" }} // This ensures your images cover the area, but might crop them
                     />
-                    <button onClick={() => deleteClothingItem(clothe.id)}>
-                      X
-                    </button>
                   </Card>
                 </Grid>
               ))}
