@@ -146,7 +146,8 @@ const Home = () => {
 
   return (
     <section className="container">
-        <header className="header"> 
+        <header className="header">
+          <img src='WWLogo.png'/>
         <div className="loginMenu">
         {currentUser ? (
           <>
@@ -165,17 +166,24 @@ const Home = () => {
           </>
         ) : (
           <>
-            <Link to="/register">Sign Up</Link>
-            {" | "}
-            <Link to="/login">Login</Link>
+            <div className="menuWrapper">
+              {/*<Link to="/Home">Home</Link>*/}
+              {/*<Link to="/VirtualCloset">Virtual Closet</Link>*/}
+              {/*<Link to="/AboutUs">About Us</Link>*/}
+              <Link to="/register">Sign Up</Link>
+              <Link to="/login">Login</Link>
+              {/*<Link to="/Home" className="LogOUT">Logout</Link>*/}
+          </div>
           </>
         )}
       </div>
         </header>
         <div className="containerMiddle">
-          <h1>Welcome to your  Closet</h1>
+          <div className="containerH1">
+          <h1>Welcome to your Closet</h1>
+          </div>
           <p>Please select a category and upload your clothes</p>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <select className="selectCategory" value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="">Select Category</option>
           <option value="T-shirts">T-shirts</option>
           <option value="Longsleeves">Longsleeves</option>
@@ -218,11 +226,11 @@ const Home = () => {
           <div>
             {removeBgProcessing && <p style={{ color: 'red', fontSize: '12px'}}>{removeBgProcessing}</p>}
           </div>
-          <div>
+          <div className="confirmUpload">
             {previewUrl && (
               <>
-                <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '600px' }}/>
-                {processedFile && <button onClick={handleUpload}>Save to Closet</button>}
+                <img src={previewUrl} alt="Preview" style={{ maxWidth: '10%', maxHeight: '200px' }}/>
+                {processedFile && <button id="saveImage" onClick={handleUpload}>Save to Closet</button>}
               </>
             )}
           </div>
