@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   signOut,
   updatePassword,
+  sendEmailVerification,
 } from "firebase/auth";
 
 async function doSocialSignIn(provider, auth) {
@@ -24,8 +25,19 @@ async function doSocialSignIn(provider, auth) {
 
 async function doPasswordReset(email) {
   let auth = getAuth();
-  await sendPasswordResetEmail(auth, email);
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Password reset email was sent."); 
+  } catch (error) {
+    if (error.code === "auth/user-not-found") {
+      alert("No user found with this email. Please register first."); 
+    } else {
+      console.error("Password reset error:", error);
+      alert("An error occurred. Please try again later."); 
+    }
+  }
 }
+
 
 async function doPasswordUpdate(password) {
   await updatePassword(password);
