@@ -25,17 +25,17 @@ const Login = () => {
 
   const passwordReset = (event) => {
     event.preventDefault();
-    let email = document.getElementById("email").value;
-    if (email) {
+    if (email) { 
       doPasswordReset(email);
-      alert("Password reset email was sent");
+      // alert("Password reset email was sent");
     } else {
       alert(
         "Please enter an email address below before you click the forgot password link."
       );
     }
   };
-
+  
+  
   return (
     <section className="container">
       <header className="header">
