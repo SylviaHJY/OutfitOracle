@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../firebase/Auth";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
@@ -200,7 +199,7 @@ const Home = () => {
           <option value="Coats">Coats</option>
           <option value="Overcoats">Overcoats</option>
           <option value="Skirts">Skirts</option>
-          <option value="Suits">Suits</option>
+          {/* <option value="Suits">Suits</option> */}
           <option value="Dresses">Dresses</option>
           <option value="Shoes">Shoes</option>
           <option value="Boots">Boots</option>
