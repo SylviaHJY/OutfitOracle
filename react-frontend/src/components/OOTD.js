@@ -186,12 +186,20 @@ const OOTD = () => {
                     <Grid container spacing={2}>
                         {myClothes.map((clothe, index) => (
                             <Grid item xs={4} sm={3} key={index}>
-                                <Card sx={{ maxWidth: 345, height: '100%' }}>
+                                <Card sx={{ maxWidth: '280px', height: '340px' }}>
                                     <CardMedia
                                         component="img"
-                                        height="140"
+                                        // height="360"
                                         image={clothe.url}
                                         alt={clothe.name}
+                                        sx={{ 
+                                            width: '240px', 
+                                            height: '300px', 
+                                            marginLeft: '10px',
+                                            marginTop: '10px',
+                                            maxWidth: '100%',
+                                            objectPosition: 'center' 
+                                        }}
                                     />
                                     <FormControlLabel
                                         control={
