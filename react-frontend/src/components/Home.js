@@ -209,6 +209,7 @@ const Home = () => {
           <option value="Heels">Heels</option>
           <option value="Hats">Hats</option>
           <option value="Bags">Bags</option>
+          <option value="Earings">Earings</option>
           <option value="Accessories">Accessories</option>
           </select>
           <p>Please upload your clothes</p>
