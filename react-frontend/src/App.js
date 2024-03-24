@@ -6,7 +6,6 @@ import Login from "./components/Login";
 import SignUpPage from "./components/SignUp";
 import Home from "./components/Home";
 import MyCloset from "./components/MyCloset";
-import StartPage from "./components/StartPage"
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
