@@ -10,6 +10,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import StartPage from "./components/StartPage";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
             <Route
               path="/myCloset"
               element={<MyCloset />}
+            />
+            <Route
+              path="/startPage"
+              element={<StartPage />}
             />
           </Routes>
         </div>

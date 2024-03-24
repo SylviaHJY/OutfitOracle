@@ -65,6 +65,7 @@ const Home = () => {
       formData.append('image_file', file, file.name);
   
       try {
+    
         const response = await fetch("http://127.0.0.1:5000/remove-bg", {
           method: "POST",
           body: formData,
@@ -178,10 +179,14 @@ const Home = () => {
         )}
       </div>
         </header>
+        <div className="homePageBannerMain">
+        <img className="homePageBanner" src="/homeMainImagOne.jpg" />
+        <h1>Welcome to your AI Closet</h1>
+        </div>
         <div className="containerMiddle">
-          <div className="containerH1">
-          <h1>Welcome to your Closet</h1>
-          </div>
+          <div className="containerMiddleForm">
+          {/*<div className="containerH1">*/}
+          {/*</div>*/}
           <p>Please select a category and upload your clothes</p>
           <select className="selectCategory" value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="">Select Category</option>
@@ -213,8 +218,8 @@ const Home = () => {
           <option value="Accessories">Accessories</option>
           </select>
           <p>Please upload your clothes</p>
-          <input type="file" onChange={handleFileChange} id="fileInput"/>
-          {file && <button onClick={handleConfirm}>Confirm Image</button>}
+          <input className="chooseImage" type="file" onChange={handleFileChange} id="fileInput"/>
+          {file && <><br/> <button style={{ marginTop:'10px'}} onClick={handleConfirm}>Confirm Image</button></>}
           <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
           {/* <div>
             {lastUploadedFile && (
@@ -229,12 +234,14 @@ const Home = () => {
           <div className="confirmUpload">
             {previewUrl && (
               <>
-                <img src={previewUrl} alt="Preview" style={{ maxWidth: '10%', maxHeight: '200px' }}/>
-                {processedFile && <button id="saveImage" onClick={handleUpload}>Save to Closet</button>}
+                <img src={previewUrl} alt="Preview" style={{ maxWidth: '400px', maxHeight: '400px', marginTop:'10px', marginBottom:'20px',}}/>
+                {processedFile &&   <button id="saveImage" onClick={handleUpload}>Save to Closet</button>}
               </>
             )}
+            {uploadSuccess && <p style={{ color: 'red', fontSize: '12px', marginBottom:'100px'}}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
           </div>
-          {uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
+          {/*{uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}*/}
+          </div>
         </div>
         <footer className="footer">Footer Content Will Go Here</footer>
     </section>
