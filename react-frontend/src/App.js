@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import SignUpPage from "./components/SignUp";
 import Home from "./components/Home";
 import MyCloset from "./components/MyCloset";
+import OOTD from "./components/OOTD";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
@@ -30,6 +31,10 @@ function App() {
             <Route
               path="/myCloset"
               element={<MyCloset />}
+            />
+            <Route
+              path="/ootd"
+              element={<OOTD />}
             />
           </Routes>
         </div>

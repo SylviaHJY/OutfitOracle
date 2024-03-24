@@ -113,13 +113,17 @@ const MyCloset = () => {
                 navigate("/myCloset");
               } else if (e.target.value === "home") {
                 navigate("/");
-              } else if (e.target.value === "signOut") {
+              } else if (e.target.value === "OOTD") {
+                navigate("/ootd");
+              }
+              else if (e.target.value === "signOut") {
                 handleSignOut();
               }
             }}
             style={{ background: "none", border: "none", cursor: "pointer" }}
           >
             <option value="myCloset">My Closet</option>
+            <option value="OOTD">OOTD</option>
             <option value="home">Home</option>
             <option value="signOut">Sign Out</option>
           </select>
