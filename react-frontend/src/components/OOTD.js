@@ -49,7 +49,7 @@ const OOTD = () => {
         }
         const db = getFirestore();
         // set up a query to get all OOTDs for the current user
-        const ootdCollectionRef = collection(db, "OOTD");
+        const ootdCollectionRef = collection(db, "OOTD", currentUser.uid, "outfits");
         const q = query(ootdCollectionRef, where("user_id", "==", currentUser.uid));
         const querySnapshot = await getDocs(q); // getDocs() returns a list of documents
 
