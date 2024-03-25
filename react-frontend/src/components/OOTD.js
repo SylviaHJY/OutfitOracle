@@ -125,9 +125,12 @@ const OOTD = () => {
     return (
         <Box sx={{ flexGrow: 1, paddingLeft: '20px' }}>
             {/* Dropdown menu */}
+            {currentUser && (
             <select
                 onChange={(e) => {
-                    if (e.target.value === "myCloset") {
+                    if (e.target.value === "OOTD") {
+                        navigate("/OOTD");
+                    }else if(e.target.value === "myCloset") {
                         navigate("/myCloset");
                     } else if (e.target.value === "home") {
                         navigate("/");
@@ -137,11 +140,12 @@ const OOTD = () => {
                 }}
                 style={{ position: 'absolute', top: 10, right: 10 }}
             >
+                <option value="OOTD">OOTD</option>
                 <option value="myCloset">My Closet</option>
                 <option value="home">Home</option>
                 <option value="signOut">Sign Out</option>
             </select>
-
+            )}
             {/* Outfits grid */}
             <Grid container spacing={2} sx={{ mt: 2, '& .MuiGrid-item': { margin: '6px' } }}>
             {outfits.map((outfitUrl, index) => (
@@ -166,7 +170,7 @@ const OOTD = () => {
 
                 {/* Add new outfit card */}
                 <Grid item xs={4}>
-                    <Card sx={{ height: '380px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed' }} onClick={() => setModalOpen(true)}>
+                    <Card sx={{ width: '310px', height: '390px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed' }} onClick={() => setModalOpen(true)}>
                         <Box sx={{ textAlign: 'center' }}>
                             <div style={{ fontSize: '5em', color: 'lightgray' }}>+</div>
                         </Box>
@@ -182,7 +186,6 @@ const OOTD = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={modalStyle}>
-                    <Button onClick={handleSaveOutfit} style={{ background: 'purple', color: 'white', marginBottom: '20px' }}>Save as outfit</Button>
                     <Grid container spacing={2}>
                         {myClothes.map((clothe, index) => (
                             <Grid item xs={4} sm={3} key={index}>
@@ -215,6 +218,12 @@ const OOTD = () => {
                             </Grid>
                         ))}
                     </Grid>
+                    {/* 组件用于创建一个支持Flexbox布局的容器，并通过display: 'flex'和justifyContent: 'flex-end'将其中的内容（即保存按钮）对齐到容器的右边。同时，通过marginTop和marginBottom属性控制按钮的垂直位置和间距。 */}
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', marginBottom: '10px' }}>
+                    <Button onClick={handleSaveOutfit} sx={{ background: 'purple', color: 'white', ':hover': {backgroundColor: 'purple', color: 'white', opacity: 0.75 } }}>
+                        Save as outfit
+                    </Button>
+                    </Box>
                 </Box>
             </Modal>
         </Box>

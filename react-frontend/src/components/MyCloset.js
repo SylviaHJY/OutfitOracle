@@ -170,7 +170,7 @@ const MyCloset = () => {
         </Box>
 
         <Box sx={{ flex: 6, overflow: "auto", padding: 2 }}>
-          <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ mt: 2, '& .MuiGrid-item': { margin: '6px' } }}>
             {clothes
               .filter(
                 (clothe) =>
@@ -178,15 +178,19 @@ const MyCloset = () => {
                   clothe.category === selectedCategory
               )
               .map((clothe, index) => (
-                <Grid item xs={6} sm={2} md={2} lg={2} key={index}>
-                  <Card sx={{ maxWidth: 345, height: "100%" }}>
-                    <CardMedia
-                      component="img"
-                      height="420"
-                      image={clothe.url}
-                      alt={clothe.name}
-                      sx={{ objectFit: "cover" }} // This ensures your images cover the area, but might crop them
-                    />
+                <Grid item key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Card sx={{ width: 290, height: 360 }}>
+                  <CardMedia
+                    component="img"
+                    height="330" // 可以保留这个高度或根据需要进行调整
+                    image={clothe.url}
+                    alt={clothe.name}
+                    sx={{
+                      objectFit: "contain", // 使图片等比例缩放
+                      maxHeight: "100%", // 确保图片高度不超过Card高度
+                      maxWidth: "100%", // 确保图片宽度不超过Card宽度
+                    }}
+                  />
                     <button onClick={() => deleteClothingItem(clothe.id)}>
                       X
                     </button>
