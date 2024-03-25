@@ -49,7 +49,7 @@ const OOTD = () => {
         }
         const db = getFirestore();
         // set up a query to get all OOTDs for the current user
-        const ootdCollectionRef = collection(db, "OOTD", currentUser.uid, "outfits");
+        const ootdCollectionRef = collection(db, "OOTD");
         const q = query(ootdCollectionRef, where("user_id", "==", currentUser.uid));
         const querySnapshot = await getDocs(q); // getDocs() returns a list of documents
 
@@ -106,6 +106,11 @@ const OOTD = () => {
       doSignOut();
       navigate("/");
       alert("You have been signed out");
+    };
+
+    const openModalAndResetSelection = () => {
+        setSelectedClothes([]); // 这将清空之前的选择
+        setModalOpen(true); // 然后打开模态框
     };
 
     // 模态框样式
@@ -167,17 +172,15 @@ const OOTD = () => {
                 </Card>
             </Grid>
         ))}
-
                 {/* Add new outfit card */}
                 <Grid item xs={4}>
-                    <Card sx={{ width: '310px', height: '390px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed' }} onClick={() => setModalOpen(true)}>
+                    <Card sx={{ width: '300px', height: '360px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed' }}  onClick={openModalAndResetSelection} >
                         <Box sx={{ textAlign: 'center' }}>
                             <div style={{ fontSize: '5em', color: 'lightgray' }}>+</div>
                         </Box>
                     </Card>
                 </Grid>
             </Grid>
-
             {/* Modal for adding new outfit */}
             <Modal
                 open={modalOpen}
@@ -229,5 +232,4 @@ const OOTD = () => {
         </Box>
     );
 };
-
 export default OOTD;
