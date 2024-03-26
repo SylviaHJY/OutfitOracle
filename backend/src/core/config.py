@@ -10,6 +10,7 @@ CLOTHING_CATEGORIES = {
     'Jackets': 'top',
     'Coats': 'top',
     'Dresses': 'top',  
+    'Overcoats': 'top',
 
     # Bottoms
     'Jeans': 'bottom',
@@ -17,7 +18,8 @@ CLOTHING_CATEGORIES = {
     'Agency pant': 'bottom',
     'Shorts': 'bottom',
     'Skirts': 'bottom',
-    'Overcoats': 'bottom',
+    'Leggings': 'bottom',
+    'Socks': 'bottom',
     
     # Shoes
     'Shoes': 'shoes',
@@ -25,11 +27,15 @@ CLOTHING_CATEGORIES = {
     'Leather shoes': 'shoes',
     'Sandals': 'shoes',
     'Sneakers': 'shoes',
+    'Slippers': 'shoes',
     'Heels': 'shoes',
     
     # Accessories (not classified as top or bottom)
     'Hats': 'accessories',
     'Bags': 'accessories',
     'Earrings': 'accessories',
+    'Belts': 'accessories',
+    'Necklaces': 'accessories',
+    'Scarves': 'accessories',
     'Accessories': 'accessories'
 }
