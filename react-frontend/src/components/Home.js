@@ -22,6 +22,23 @@ const Home = () => {
   const [processedFile, setProcessedFile] = useState(null); // for uploading to Cloud Storage
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [removeBgProcessing, setRemoveBgProcessing] = useState(''); // for showing processing status
+  const [mainCategory, setMainCategory] = useState('');
+
+  const CLOTHING_CATEGORIES = {
+    'Tops': ['T-shirts', 'Longsleeves', 'Tank tops', 'Hoodies', 'Blouses', 'Blazers & Vests', 'Sweaters', 'Jackets', 'Coats', 'Dresses', 'Overcoats'],
+    'Bottoms': ['Jeans', 'Pants', 'Agency pant', 'Shorts', 'Skirts','Leggings','Socks'],
+    'Shoes': ['Shoes', 'Boots', 'Leather shoes', 'Sandals', 'Sneakers', 'Slippers','Heels'],
+    'Accessories': ['Hats', 'Bags', 'Earrings','Belts','Necklaces','Scarves','Accessories'],
+  };
+
+  const handleMainCategoryChange = (e) => {
+    setMainCategory(e.target.value);
+    setCategory(''); // Reset specific category on main category change
+  };
+
+  const handleSpecificCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
 
   useEffect(() => {
     const auth = getAuth();
@@ -57,6 +74,10 @@ const Home = () => {
   
   // remove background from image
   const handleConfirm = async () => {
+    if (!currentUser) {
+      alert("Please log in to upload files.");
+      return;
+    }
     if (file) {
       setRemoveBgProcessing('Removing image background...'); // set processing status
       const formData = new FormData();
@@ -95,7 +116,8 @@ const Home = () => {
   };
 
   // upload file after user has confirmed the processed image
-  const handleUpload = async () => {
+  const handleUpload = async (e) => {
+    e.preventDefault();
     if (!currentUser) {
       alert("Please log in to upload files.");
       return;
@@ -186,37 +208,22 @@ const Home = () => {
           <div className="containerMiddleForm">
           {/*<div className="containerH1">*/}
           {/*</div>*/}
-          <p>Please select a category and upload your clothes</p>
-          <select className="selectCategory" value={category} onChange={(e) => setCategory(e.target.value)} required>
-          <option value="">Select Category</option>
-          <option value="T-shirts">T-shirts</option>
-          <option value="Longsleeves">Longsleeves</option>
-          <option value="Tank tops">Tank tops</option>
-          <option value="Hoodies">Hoodies</option>
-          <option value="Blouses">Blouses</option>
-          <option value="Blazers & Vests">Blazers & Vests</option>
-          <option value="Sweaters">Sweaters</option>
-          <option value="Jeans">Jeans</option>
-          <option value="Pants">Pants</option>
-          <option value="Agency pant">Agency pant</option>
-          <option value="Shorts">Shorts</option>
-          <option value="Jackets">Jackets</option>
-          <option value="Coats">Coats</option>
-          <option value="Overcoats">Overcoats</option>
-          <option value="Skirts">Skirts</option>
-          {/* <option value="Suits">Suits</option> */}
-          <option value="Dresses">Dresses</option>
-          <option value="Shoes">Shoes</option>
-          <option value="Boots">Boots</option>
-          <option value="Leather shoes">Leather shoes</option>
-          <option value="Sandals">Sandals</option>
-          <option value="Sneakers">Sneakers</option>
-          <option value="Heels">Heels</option>
-          <option value="Hats">Hats</option>
-          <option value="Bags">Bags</option>
-          <option value="Earings">Earings</option>
-          <option value="Accessories">Accessories</option>
+          <p>Please select a category and upload your clothes</p>  
+          <select value={mainCategory} onChange={handleMainCategoryChange} required>
+          <option value="">Select Main Category</option>
+          {Object.keys(CLOTHING_CATEGORIES).map((category) => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+
+        {mainCategory && (
+          <select value={category} onChange={handleSpecificCategoryChange} required>
+            <option value="">Select Specific Category</option>
+            {CLOTHING_CATEGORIES[mainCategory].map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
           </select>
+        )}
           <p>Please upload your clothes</p>
           <input className="chooseImage" type="file" onChange={handleFileChange} id="fileInput"/>
           {file && <><br/> <button style={{ marginTop:'10px'}} onClick={handleConfirm}>Confirm Image</button></>}
@@ -249,3 +256,34 @@ const Home = () => {
 };
 
 export default Home;
+
+
+{/* <select className="selectCategory" value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="">Select Category</option>
+          <option value="T-shirts">T-shirts</option>
+          <option value="Longsleeves">Longsleeves</option>
+          <option value="Tank tops">Tank tops</option>
+          <option value="Hoodies">Hoodies</option>
+          <option value="Blouses">Blouses</option>
+          <option value="Blazers & Vests">Blazers & Vests</option>
+          <option value="Sweaters">Sweaters</option>
+          <option value="Jeans">Jeans</option>
+          <option value="Pants">Pants</option>
+          <option value="Agency pant">Agency pant</option>
+          <option value="Shorts">Shorts</option>
+          <option value="Jackets">Jackets</option>
+          <option value="Coats">Coats</option>
+          <option value="Overcoats">Overcoats</option>
+          <option value="Skirts">Skirts</option>
+          <option value="Dresses">Dresses</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Boots">Boots</option>
+          <option value="Leather shoes">Leather shoes</option>
+          <option value="Sandals">Sandals</option>
+          <option value="Sneakers">Sneakers</option>
+          <option value="Heels">Heels</option>
+          <option value="Hats">Hats</option>
+          <option value="Bags">Bags</option>
+          <option value="Earings">Earings</option>
+          <option value="Accessories">Accessories</option>
+          </select> */}
