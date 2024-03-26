@@ -88,6 +88,10 @@ const SignUpPage = () => {
     }
   };
 
+  const redirectToLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <section className="container">
       <header className="header">
@@ -123,7 +127,9 @@ const SignUpPage = () => {
             </Button>
           </div>
         </form>
-        <button className="alreadyHaveAccount">Already Have an Account?</button>
+        <button className="alreadyHaveAccount" onClick={redirectToLogin}>
+          Already Have an Account?
+        </button>
       </div>
       <footer className="footer">Footer Content Will Go Here</footer>
     </section>

@@ -123,3 +123,15 @@ body {
 .forgotPassword:hover {
   color: rgb(0, 72, 139);
 }
+
+.dontHaveAccount {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.dontHaveAccount:hover {
+  color: rgb(0, 72, 139);
+}
