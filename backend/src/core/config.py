@@ -34,7 +34,7 @@ CLOTHING_CATEGORIES = {
     # Accessories (not classified as top or bottom)
     'Hats': 'accessories',
     'Bags': 'accessories',
-    'Earrings': 'accessories',
+    'Earings': 'accessories',
     'Bracelets': 'accessories',
     'Rings': 'accessories',
     'Necklaces': 'accessories',

@@ -28,7 +28,7 @@ const Home = () => {
     'Tops': ['T-shirts', 'Longsleeves', 'Tank tops', 'Hoodies', 'Blouses', 'Blazers & Vests', 'Sweaters', 'Jackets', 'Coats', 'Dresses', 'Overcoats'],
     'Bottoms': ['Jeans', 'Pants', 'Agency pant', 'Shorts', 'Skirts','Leggings','Socks'],
     'Shoes': ['Shoes', 'Sports shoes','Boots', 'Leather shoes', 'Sandals', 'Sneakers', 'Slippers','Heels'],
-    'Accessories': ['Hats', 'Bags', 'Earrings','Bracelets','Rings','Necklaces','Belts','Watches','Scarves','Accessories'],
+    'Accessories': ['Hats', 'Bags', 'Earings','Bracelets','Rings','Necklaces','Belts','Watches','Scarves','Accessories'],
   };
 
   const handleMainCategoryChange = (e) => {
