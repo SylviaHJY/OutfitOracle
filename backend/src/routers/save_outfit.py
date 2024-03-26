@@ -73,6 +73,6 @@ def upload_clothing_items():
     outfit_url = upload_to_firebase_storage(outfit_image_io, file_name, user_id)
 
     # 将图片URL保存到Firestore
-    document_id = save_to_firestore(outfit_url, user_id)
+    document_id = save_to_firestore(outfit_url,file_name,user_id)
 
     return jsonify({"document_id": document_id, "outfit_url": outfit_url})
