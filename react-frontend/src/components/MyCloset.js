@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getFirestore, doc, getDoc, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  deleteDoc,
+  updateDoc,
+  arrayRemove,
+} from "firebase/firestore";
 import { AuthContext } from "../firebase/Auth";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -46,7 +53,7 @@ const MyCloset = () => {
   const currentUser = useContext(AuthContext);
   const navigate = useNavigate();
   const [clothes, setClothes] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("All clothes");
+  const [selectedCategory, setSelectedCategory] = useState("All Clothes");
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -58,7 +65,7 @@ const MyCloset = () => {
       if (docSnap.exists()) {
         setClothes(docSnap.data().items || []);
       } else {
-        console.log("No such document!");
+        console.log("No such document exists!");
       }
     };
 
@@ -68,30 +75,39 @@ const MyCloset = () => {
   const handleSignOut = () => {
     doSignOut();
     navigate("/");
-    alert("You have been signed out");
+    alert("You have been signed out.");
   };
 
   const handleListItemClick = (category) => {
     setSelectedCategory(category);
   };
 
-  //delete a clothing item from the database and adjust the list
-  const deleteClothingItem = async (itemId) => {
+  //delete an item from the db and update the list
+  const deleteClothingItem = async (itemName) => {
+    if (!itemName) {
+      console.error("Invalid itemName:", itemName);
+      return;
+    }
+
     const db = getFirestore();
     const docRef = doc(db, "closets", currentUser.uid);
+    const updatedClothes = clothes.filter((item) => item.name !== itemName);
 
-    await deleteDoc(docRef, {
-      items: clothes.filter((item) => item.id !== itemId),
-    });
-    setClothes((prevClothes) =>
-      prevClothes.filter((item) => item.id !== itemId)
-    );
+    try {
+      await updateDoc(docRef, {
+        items: updatedClothes,
+      });
+
+      setClothes(updatedClothes);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   // Calculate the number of items in a category
   const countItemsInCategory = (category) => {
     return clothes.filter(
-      (clothe) => category === "All clothes" || clothe.category === category
+      (clothe) => category === "All Clothes" || clothe.category === category
     ).length;
   };
 
@@ -115,8 +131,7 @@ const MyCloset = () => {
                 navigate("/");
               } else if (e.target.value === "OOTD") {
                 navigate("/ootd");
-              }
-              else if (e.target.value === "signOut") {
+              } else if (e.target.value === "signOut") {
                 handleSignOut();
               }
             }}
@@ -145,11 +160,11 @@ const MyCloset = () => {
           <List>
             {/* count */}
             <ListItemButton
-              selected={selectedCategory === "All clothes"}
-              onClick={() => handleListItemClick("All clothes")}
+              selected={selectedCategory === "All Clothes"}
+              onClick={() => handleListItemClick("All Clothes")}
             >
               <ListItemText
-                primary={`All Clothes (${countItemsInCategory("All clothes")})`}
+                primary={`All Clothes (${countItemsInCategory("All Clothes")})`}
               />
             </ListItemButton>
             {categories.map((category) => {
@@ -170,30 +185,64 @@ const MyCloset = () => {
         </Box>
 
         <Box sx={{ flex: 6, overflow: "auto", padding: 2 }}>
-        <Grid container spacing={2} sx={{ mt: 2, '& .MuiGrid-item': { margin: '6px' } }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ mt: 2, "& .MuiGrid-item": { margin: "6px" } }}
+          >
             {clothes
               .filter(
                 (clothe) =>
-                  selectedCategory === "All clothes" ||
+                  selectedCategory === "All Clothes" ||
                   clothe.category === selectedCategory
               )
               .map((clothe, index) => (
-                <Grid item key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <Card sx={{ width: 290, height: 360 }}>
-                  <CardMedia
-                    component="img"
-                    height="330" // 可以保留这个高度或根据需要进行调整
-                    image={clothe.url}
-                    alt={clothe.name}
+                <Grid
+                  item
+                  key={index}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Card
                     sx={{
-                      objectFit: "contain", // 使图片等比例缩放
-                      maxHeight: "100%", // 确保图片高度不超过Card高度
-                      maxWidth: "100%", // 确保图片宽度不超过Card宽度
+                      width: 290,
+                      height: 360,
+                      position: "relative",
+                      "&:hover button": {
+                        color: "#FF0000",
+                      },
                     }}
-                  />
-                    <button onClick={() => deleteClothingItem(clothe.id)}>
+                  >
+                    <button
+                      onClick={() => deleteClothingItem(clothe.name)}
+                      className="delete-button"
+                      style={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        zIndex: 2,
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#000",
+                        fontWeight: "bold",
+                        transition: "color 0.3s",
+                      }}
+                      onMouseEnter={(e) => (e.target.style.color = "#FF0000")}
+                      onMouseLeave={(e) => (e.target.style.color = "#000")}
+                    >
                       X
                     </button>
+                    <CardMedia
+                      component="img"
+                      height="330" // 可以保留这个高度或根据需要进行调整
+                      image={clothe.url}
+                      alt={clothe.name}
+                      sx={{
+                        objectFit: "contain", // 使图片等比例缩放
+                        maxHeight: "100%", // 确保图片高度不超过Card高度
+                        maxWidth: "100%", // 确保图片宽度不超过Card宽度
+                      }}
+                    />
                   </Card>
                 </Grid>
               ))}
