@@ -23,6 +23,7 @@ CLOTHING_CATEGORIES = {
     
     # Shoes
     'Shoes': 'shoes',
+    'Sports shoes': 'shoes',
     'Boots': 'shoes',
     'Leather shoes': 'shoes',
     'Sandals': 'shoes',
@@ -34,8 +35,11 @@ CLOTHING_CATEGORIES = {
     'Hats': 'accessories',
     'Bags': 'accessories',
     'Earrings': 'accessories',
-    'Belts': 'accessories',
+    'Bracelets': 'accessories',
+    'Rings': 'accessories',
     'Necklaces': 'accessories',
+    'Watches': 'accessories',
+    'Belts': 'accessories',
     'Scarves': 'accessories',
     'Accessories': 'accessories'
 }
