@@ -220,18 +220,21 @@ const MyCloset = () => {
 
 
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-      <Box
-  sx={{
-    width: "15%",
-    borderRight: 1,
-    borderColor: "divider",
-    position: "sticky",
-    top: 0,
-    height: "calc(100vh - 48px)",
-    overflowY: "auto", // Add this line to enable sidebar scrollbar
-  }}
->
+        <Box
+          sx={{
+            width: "15%",
+            overflowY: "auto", // Add overflow-y: auto for scrollbar
+            borderRight: 1,
+            borderColor: "divider",
+            position: "sticky",
+            top: 0,
+            height: "550px",
 
+
+
+
+          }}
+        >
           <List>
             {/* count */}
             <ListItemButton
