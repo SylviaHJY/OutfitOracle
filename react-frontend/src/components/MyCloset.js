@@ -19,6 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import WeatherForecast from "./WeatherForecast";
 
+
+
+
 // 更新衣物分类
 const categories = [
   "T-shirts",
@@ -49,17 +52,26 @@ const categories = [
   "Accessories",
 ];
 
+
+
+
 const MyCloset = () => {
   const currentUser = useContext(AuthContext);
   const navigate = useNavigate();
   const [clothes, setClothes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All Clothes");
 
+
+
+
   useEffect(() => {
     const fetchClothes = async () => {
       if (!currentUser) return;
       const db = getFirestore();
       const docRef = doc(db, "closets", currentUser.uid);
+
+
+
 
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -69,8 +81,14 @@ const MyCloset = () => {
       }
     };
 
+
+
+
     fetchClothes();
   }, [currentUser]);
+
+
+
 
   const handleSignOut = () => {
     doSignOut();
@@ -78,9 +96,15 @@ const MyCloset = () => {
     alert("You have been signed out.");
   };
 
+
+
+
   const handleListItemClick = (category) => {
     setSelectedCategory(category);
   };
+
+
+
 
   //delete an item from the db and update the list
   const deleteClothingItem = async (itemName) => {
@@ -89,20 +113,31 @@ const MyCloset = () => {
       return;
     }
 
+
+
+
     const db = getFirestore();
     const docRef = doc(db, "closets", currentUser.uid);
     const updatedClothes = clothes.filter((item) => item.name !== itemName);
-
-    try {
+   
+    if(window.confirm("Are you sure you want to delete this picture?")) {
+     try {
       await updateDoc(docRef, {
         items: updatedClothes,
       });
+
+
+
 
       setClothes(updatedClothes);
     } catch (error) {
       console.error("Error deleting item:", error);
     }
+    }
   };
+
+
+
 
   // Calculate the number of items in a category
   const countItemsInCategory = (category) => {
@@ -111,52 +146,92 @@ const MyCloset = () => {
     ).length;
   };
 
+
+
+
+  const buttonStyle = {
+    backgroundColor: 'transparent',
+    border: 'none',
+    color: '#fff',
+    fontSize: '16px',
+    cursor: 'pointer',
+    marginRight: '35px', // Adjust margin as needed
+  };
+ 
+  // Define hover effect inline style
+  const buttonHoverStyle = {
+    textDecoration: 'underline',
+  };
+ 
+  // Add event listeners to apply the hover effect
+  document.querySelectorAll('.header button').forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      Object.assign(this.style, buttonHoverStyle);
+    });
+ 
+    button.addEventListener('mouseleave', function() {
+      Object.assign(this.style, { textDecoration: 'none' });
+    });
+  });
+ 
+
+
+
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "80vh",
-        width: "100%",
-      }}
+    <Box className="my-closet">
+     
+  <Box className="header">
+    <img src="WWLogo.png" alt="Logo" style={{ width: '250px', marginRight: '850px' }} />
+    <button
+      onClick={() => navigate("/")}
+      style={buttonStyle}
     >
-      <WeatherForecast />
-      <Box sx={{ alignSelf: "flex-end", p: 1 }}>
-        {currentUser && (
-          <select
-            onChange={(e) => {
-              if (e.target.value === "myCloset") {
-                navigate("/myCloset");
-              } else if (e.target.value === "home") {
-                navigate("/");
-              } else if (e.target.value === "OOTD") {
-                navigate("/ootd");
-              } else if (e.target.value === "signOut") {
-                handleSignOut();
-              }
-            }}
-            style={{ background: "none", border: "none", cursor: "pointer" }}
-          >
-            <option value="myCloset">My Closet</option>
-            <option value="OOTD">OOTD</option>
-            <option value="home">Home</option>
-            <option value="signOut">Sign Out</option>
-          </select>
-        )}
-      </Box>
+      Home
+    </button>
+    <button
+      onClick={() => navigate("/myCloset")}
+      style={buttonStyle}
+    >
+      My Closet
+    </button>
+    <button
+      onClick={() => navigate("/ootd")}
+      style={buttonStyle}
+    >
+      OOTD
+    </button>
+    <button onClick={handleSignOut} style={buttonStyle}>
+      Sign Out
+    </button>
+   
+  </Box>
+
+
+
+
+        <WeatherForecast />
+
+
+
+
+
+
+
 
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <Box
-          sx={{
-            width: "15%",
-            borderRight: 1,
-            borderColor: "divider",
-            overflowY: "auto",
-            position: "sticky",
-            top: 0,
-            height: "calc(100vh - 48px)",
-          }}
-        >
+      <Box
+  sx={{
+    width: "15%",
+    borderRight: 1,
+    borderColor: "divider",
+    position: "sticky",
+    top: 0,
+    height: "calc(100vh - 48px)",
+    overflowY: "auto", // Add this line to enable sidebar scrollbar
+  }}
+>
+
           <List>
             {/* count */}
             <ListItemButton
@@ -184,11 +259,19 @@ const MyCloset = () => {
           </List>
         </Box>
 
-        <Box sx={{ flex: 6, overflow: "auto", padding: 2 }}>
+
+
+
+
+
+
+
+       
+        <Box sx={{ flex: 6, overflow: "auto", padding: 4 }}>
           <Grid
             container
-            spacing={2}
-            sx={{ mt: 2, "& .MuiGrid-item": { margin: "6px" } }}
+            spacing={4}
+            sx={{ mt: 1, "& .MuiGrid-item": { margin: "6px" } }}
           >
             {clothes
               .filter(
@@ -204,6 +287,7 @@ const MyCloset = () => {
                 >
                   <Card
                     sx={{
+                   
                       width: 290,
                       height: 360,
                       position: "relative",
@@ -253,4 +337,15 @@ const MyCloset = () => {
   );
 };
 
+
+
+
 export default MyCloset;
+
+
+
+
+
+
+
+
