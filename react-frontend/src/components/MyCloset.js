@@ -119,7 +119,7 @@ const MyCloset = () => {
     const db = getFirestore();
     const docRef = doc(db, "closets", currentUser.uid);
     const updatedClothes = clothes.filter((item) => item.name !== itemName);
-   
+
     if(window.confirm("Are you sure you want to delete this picture?")) {
      try {
       await updateDoc(docRef, {

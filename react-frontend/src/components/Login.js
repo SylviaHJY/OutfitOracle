@@ -25,7 +25,7 @@ const Login = () => {
 
   const passwordReset = (event) => {
     event.preventDefault();
-    if (email) { 
+    if (email) {
       doPasswordReset(email);
       // alert("Password reset email was sent");
     } else {
@@ -34,8 +34,11 @@ const Login = () => {
       );
     }
   };
-  
-  
+
+  const redirectToSignUp = () => {
+    navigate("/register");
+  };
+
   return (
     <section className="container">
       <header className="header">
@@ -75,6 +78,9 @@ const Login = () => {
         </form>
         <button className="forgotPassword" onClick={passwordReset}>
           Forgot Password?
+        </button>
+        <button className="dontHaveAccount" onClick={redirectToSignUp}>
+          Don't Have an Account?
         </button>
       </div>
       <footer className="footer">Footer Content Will Go Here</footer>
