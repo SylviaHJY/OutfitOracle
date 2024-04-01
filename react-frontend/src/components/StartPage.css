@@ -102,6 +102,10 @@
     .right-side-logo img{
     height: 70px;
     }
+
+    .right-side-logo p{
+        color:white
+    }
     .start-page-images{
     position: relative;
     height: 650px;

@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 
 function StartPage() {
     const navigate = useNavigate()
+    const redirectToLogin = () => {
+      navigate("/login");
+    };
   return (
     <>
       <div className="start-page-container">
 
         <div className="left-section">
           <div className='logo-container'>
-            <img src="/logo.png" alt="logo" />
+            {/*<img src="/logo.png" alt="logo" />*/}
           </div>
           <ul className='navigation text-small-caps'>
             <li>Home</li>
@@ -20,7 +23,7 @@ function StartPage() {
           <div className='main-content'>
             <h1>Welcome</h1>
             <p>
-              Get ready to unlock the full potential of your wardrobe with Wardrobe Wizard!
+              PDS Get ready to unlock the full potential of your wardrobe with Wardrobe Wizard!
               Your stylish companion for effortless wardrobe management!
             </p>
 
@@ -28,13 +31,17 @@ function StartPage() {
               Reclaim your closet!
             </p>
             <button className="cta-btn" onClick={()=>navigate("/register")}>Sign Up</button>
+            <button className="alreadyHaveAccount" onClick={redirectToLogin}>
+          Already Have an Account?
+        </button>
           </div>
         </div>
         
 
         <div className="right-section">
           <div className='right-side-logo'>
-            <img src="/WWLogo.png" alt="logo" />
+          <p>Wardrobe Wizard</p>
+            {/*<img src="/WWLogo.png" alt="logo" />*/}
           </div>
           <div className='start-page-images'>
             <div className="start-page-image-1">
