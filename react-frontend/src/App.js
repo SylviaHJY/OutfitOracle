@@ -7,6 +7,7 @@ import SignUpPage from "./components/SignUp";
 import Home from "./components/Home";
 import MyCloset from "./components/MyCloset";
 import OOTD from "./components/OOTD";
+import StartPage from "./components/StartPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
@@ -20,6 +21,7 @@ function App() {
         <div className="App-body">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/startPage" element={<StartPage/>} />
             <Route
               path="/login"
               element={ <Login />}

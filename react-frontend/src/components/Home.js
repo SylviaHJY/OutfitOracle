@@ -6,6 +6,10 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getDownloadURL } from "firebase/storage";
 import { doSignOut } from "../firebase/FirebaseFunctions";
+//import Form from 'react-bootstrap/Form';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRef } from "react";
+
 
 // import the home page css
 import "./Home.css";
@@ -31,6 +35,10 @@ const Home = () => {
     'Accessories': ['Hats', 'Bags', 'Earings','Bracelets','Rings','Necklaces','Belts','Watches','Scarves','Accessories'],
   };
 
+
+  const bottomRef = useRef(null);
+  
+
   const handleMainCategoryChange = (e) => {
     setMainCategory(e.target.value);
     setCategory(''); // Reset specific category on main category change
@@ -50,7 +58,7 @@ const Home = () => {
 
   const handleSignOut = () => {
     doSignOut();
-    navigate('/');
+    navigate('/startPage');
     alert("You have been signed out");
   };
 
@@ -99,14 +107,17 @@ const Home = () => {
         setProcessedFile(new File([blobData], file.name, { type: 'image/png' }));
         setPreviewUrl(URL.createObjectURL(blobData));
         setRemoveBgProcessing('Background removal completed'); // reset processing status
+        {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       } catch (error) {
         console.error("Error removing background:", error);
         setRemoveBgProcessing('Failed to remove background');
         alert("Error removing background.");
+        {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       }
     }
   };
   
+
 
   const checkDocumentExists = async (userId) => {
     const db = getFirestore();
@@ -167,9 +178,9 @@ const Home = () => {
   };
 
   return (
-    <section className="container">
-        <header className="header">
-          <img src='WWLogo.png'/>
+    <section className="containerHP">
+        <header className="headerHP">
+          <img src='WWLogo.jpg'/>
         <div className="loginMenu">
         {currentUser ? (
           <>
@@ -225,6 +236,12 @@ const Home = () => {
           </select>
         )}
           <p>Please upload your clothes</p>
+          {/* Bootstrap - requires to run inside frontend folder: npm install react-bootstrap bootstrap */}
+          {/*
+          <Form.Group controlId="formFileLg" className="mb-3">
+          <Form.Label>Upload Image</Form.Label>
+          <Form.Control type="file" size="lg"  onChange={handleFileChange}/>
+          </Form.Group>*/}      
           <input className="chooseImage" type="file" onChange={handleFileChange} id="fileInput"/>
           {file && <><br/> <button style={{ marginTop:'10px'}} onClick={handleConfirm}>Confirm Image</button></>}
           <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
@@ -241,8 +258,9 @@ const Home = () => {
           <div className="confirmUpload">
             {previewUrl && (
               <>
-                <img src={previewUrl} alt="Preview" style={{ maxWidth: '400px', maxHeight: '400px', marginTop:'10px', marginBottom:'20px',}}/>
-                {processedFile &&   <button id="saveImage" onClick={handleUpload}>Save to Closet</button>}
+                <img className="imageUploaded" src={previewUrl} alt="Preview" style={{ marginTop:'10px', marginBottom:'20px',}}/>
+                {/*ref={bottomRef} */}
+                {processedFile &&   <button id="saveImage"  onClick={handleUpload}>Save to Closet</button>}
               </>
             )}
             {uploadSuccess && <p style={{ color: 'red', fontSize: '12px', marginBottom:'100px'}}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
@@ -250,7 +268,14 @@ const Home = () => {
           {/*{uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}*/}
           </div>
         </div>
-        <footer className="footer">Footer Content Will Go Here</footer>
+        {/*<footer className="footer">Footer Content Will Go Here</footer>*/}
+        <div className='start-page-footer'>
+          <div className='social-media-icons'>
+            <img src="/facebook.png" alt="facebook icon" />
+            <img src="/instagram.png" alt="instagram icon" />
+            <img src="/linkedin.png" alt="linkedin icon" />
+          </div>
+        </div>
     </section>
   );
 };
