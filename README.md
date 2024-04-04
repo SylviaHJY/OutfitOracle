@@ -7,9 +7,9 @@ You will need to have these techniques available on your computer:
 - Python (at least version 3.9 or above)
   You can download Python from the official Python website.
 - pip
-- Node.js
+- Node.js (vesron v20.12.1)
   You can download Node.js from the official Node.js website.
-- npm
+- npm (version 10.5.0)
 - React
 
 ## Getting Started
