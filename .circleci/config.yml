@@ -23,13 +23,13 @@ jobs:
       - run:
           name: Run test cases
           command: 
-           pytest saveOutfitTest.py
-           pytest removeBgTest.py
-           pytest canvasImageTest.py
+            pytest saveOutfitTest.py
+            pytest removeBgTest.py
+            pytest canvasImageTest.py
 
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build-and-test  # Corrected the job name to match the defined job
