@@ -21,10 +21,15 @@ jobs:
 
       # Run your tests using the appropriate command
       - run:
-          name: Run tests
-          command: pytest
+          name: Run test cases
+          command: 
+           pytest saveOutfitTest.py
+           pytest removeBgTest.py
+           pytest canvasImageTest.py
+
 
 workflows:
-  sample:
+  version: 2
+  build_and_test:
     jobs:
-      - build-and-test
+      - build
