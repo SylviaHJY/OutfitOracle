@@ -16,16 +16,17 @@ jobs:
 
       # Adjust the path and name of the dependency file if needed
       - run:
-          name: Install dependencies
-          command: pip install -r requirements.txt
+    name: Install dependencies
+    command: pip install -r backend/requirements.txt
+
 
       # Run your tests using the appropriate command
       - run:
-          name: Run test cases
-          command: 
-            pytest saveOutfitTest.py
-            pytest removeBgTest.py
-            pytest canvasImageTest.py
+    name: Run test cases
+    command: |
+      pytest saveOutfitTest.py
+      pytest removeBgTest.py
+      pytest canvasImageTest.py
 
 
 workflows:
@@ -33,3 +34,4 @@ workflows:
   build_and_test:
     jobs:
       - build-and-test  # Corrected the job name to match the defined job
+
