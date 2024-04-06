@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   python: circleci/python@2.1.1
 
+# Define cache configuration
 jobs:
   build-and-test:
     docker:
@@ -12,6 +13,12 @@ jobs:
       - checkout
       - python/install-packages:
           pkg-manager: pip
+
+    # Save cache
+      - save_cache:
+          key: v1-dependencies-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
+          paths:
+            - backend/requirements.txt
 
       # Adjust the path and name of the dependency file if needed
       - run:
