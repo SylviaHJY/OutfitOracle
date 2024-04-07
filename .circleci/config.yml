@@ -14,15 +14,15 @@ jobs:
           pkg-manager: pip
 
       # Save cache
-- save_cache:
-    key: v1-dependencies-{{ .Branch }}-{{ checksum "C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt" }}
-    paths:
-      - C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt
+      - save_cache:
+         key: v1-dependencies-{{ .Branch }}-{{ checksum "C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt" }}
+         paths:
+          - C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt
 
-# Restore cache
-- restore_cache:
-    keys:
-      - v1-dependencies-{{ .Branch }}
+      # Restore cache
+      - restore_cache:
+       keys:
+        - v1-dependencies-{{ .Branch }}
 
       # Adjust the path to the requirements.txt file
       - run:
