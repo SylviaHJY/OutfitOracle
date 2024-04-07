@@ -10,24 +10,27 @@ jobs:
 
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
+
+      # Navigate to the directory containing requirements.txt
+      - run:
+          name: Change to directory containing requirements.txt
+          command: cd C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend
+
+      # Install dependencies using requirements.txt
+      - run:
+          name: Install dependencies
+          command: pip install -r requirements.txt
 
       # Save cache
       - save_cache:
-          key: v1-dependencies-{{ .Branch }}-{{ checksum "C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt" }}
+          key: v1-dependencies-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
-            - C:\\Users\\riyad\\OneDrive\\Desktop\\wardrobewizard\\Wardrobe-Wizard\\backend\\requirements.txt
+            - requirements.txt
 
       # Restore cache
       - restore_cache:
           keys:
             - v1-dependencies-{{ .Branch }}
-
-      # Adjust the path to the requirements.txt file
-      - run:
-          name: Install dependencies
-          command: pip install -r backend/requirements.txt
 
       # Run your tests using the appropriate command
       - run:
