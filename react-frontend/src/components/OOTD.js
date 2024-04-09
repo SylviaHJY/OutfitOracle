@@ -78,7 +78,11 @@ const OOTD = () => {
     };
     
     try {
-        const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
+
+        //Deployment URL
+        const response = await axios.post('http://20.81.191.105:5000/outfit', outfitData, {
+        //Localhost URL
+        //const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
             headers: { 'Content-Type': 'application/json' },
         });
         const newOutfit = {
