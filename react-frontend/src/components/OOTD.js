@@ -166,7 +166,9 @@ const OOTD = () => {
                         navigate("/OOTD");
                     }else if(e.target.value === "myCloset") {
                         navigate("/myCloset");
-                    } else if (e.target.value === "home") {
+                    } else if (e.target.value === "Calendar") {
+                        navigate("/calendar");
+                    }else if (e.target.value === "home") {
                         navigate("/");
                     } else if (e.target.value === "signOut") {
                         handleSignOut(); 
@@ -176,6 +178,7 @@ const OOTD = () => {
             >
                 <option value="OOTD">OOTD</option>
                 <option value="myCloset">My Closet</option>
+                <option value="Calendar">Calendar</option>
                 <option value="home">Home</option>
                 <option value="signOut">Sign Out</option>
             </select>
