@@ -12,12 +12,14 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { doSignOut } from "../firebase/FirebaseFunctions"; 
+import "./Calendar.css";
 
 const CalendarPage = () => {
   const currentUser = useContext(AuthContext);
   const [outfits, setOutfits] = useState([]); 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedOutfit, setSelectedOutfit] = useState(null);
+  const [dateOfoutfit, setDateOfoutfit] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -40,17 +42,39 @@ const CalendarPage = () => {
     fetchData();
   }, [currentUser]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentUser) {
+        console.log("No user found");
+        return;
+      }
+      const db = getFirestore();
+      const userCalendarRef = doc(db, "Calendar", currentUser.uid);
+      const datesCollectionRef = collection(userCalendarRef, "dates");
+      const querySnapshot = await getDocs(datesCollectionRef);
+      let tempOutfits = [];
+      querySnapshot.forEach((doc) => {
+        tempOutfits.push({ date: doc.id, ...doc.data() });
+      });
+      setDateOfoutfit(tempOutfits); // 使用正确的状态更新函数
+    };
+    fetchData();
+  }, [currentUser]);
+  
+  
+
   const tileContent = ({ date, view }) => {
     if (view === 'month') {
       // Find outfits for the specific date
       const dateString = date.toISOString().split('T')[0]; // Format the date to match the 'YYYY-MM-DD' format
-      const outfitForDate = outfits.find(outfit => outfit.date === dateString);
+      const outfitForDate = dateOfoutfit.find(outfit => outfit.date === dateString);
+      console.log("Outfit for date: ", outfitForDate);
   
       // If there's an outfit for this date, return a thumbnail or some indication
       if (outfitForDate) {
         return (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <img src={outfitForDate.outfit_url} alt="Outfit" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+          <div className="titleImage">
+            <img src={outfitForDate.url} alt="Outfit"/>
           </div>
         );
       }
@@ -88,7 +112,19 @@ const CalendarPage = () => {
       const dateDocRef = doc(datesCollectionRef, outfitData.date);
       console.log("Attempting to write to path: ", `Calendar/${currentUser.uid}/dates/${outfitData.date}`);
       await setDoc(dateDocRef, outfitData); // Saving the outfit data as a document with the date as the document ID
-  
+      
+      // Here, we update the `dateOfoutfit` state with the new outfit data
+      setDateOfoutfit(prevOutfits => {
+        const existingOutfitIndex = prevOutfits.findIndex(outfit => outfit.date === outfitData.date);
+        const newOutfits = [...prevOutfits];
+        if(existingOutfitIndex >= 0) {
+          newOutfits[existingOutfitIndex] = outfitData; // Update existing outfit
+        } else {
+          newOutfits.push(outfitData); // Add new outfit
+        }
+        return newOutfits;
+      });
+
       alert('Outfit saved for the day!');
       setSelectedOutfit(null);
       setModalOpen(false);
@@ -151,8 +187,9 @@ const CalendarPage = () => {
         </select>
       )}
 
-      <Box sx={{ flexGrow: 1 }}>
+      <Box className="calendarContainer">
         <ReactCalendar
+          className="calendar"
           onChange={setSelectedDate}
           value={selectedDate}
           tileContent={tileContent}
