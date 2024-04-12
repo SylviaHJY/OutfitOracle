@@ -78,7 +78,11 @@ const OOTD = () => {
     };
     
     try {
-        const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
+
+        //Deployment URL
+        const response = await axios.post('http://20.81.191.105:5000/outfit', outfitData, {
+        //Localhost URL
+        //const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
             headers: { 'Content-Type': 'application/json' },
         });
         const newOutfit = {
@@ -162,7 +166,9 @@ const OOTD = () => {
                         navigate("/OOTD");
                     }else if(e.target.value === "myCloset") {
                         navigate("/myCloset");
-                    } else if (e.target.value === "home") {
+                    } else if (e.target.value === "Calendar") {
+                        navigate("/calendar");
+                    }else if (e.target.value === "home") {
                         navigate("/");
                     } else if (e.target.value === "signOut") {
                         handleSignOut(); 
@@ -172,6 +178,7 @@ const OOTD = () => {
             >
                 <option value="OOTD">OOTD</option>
                 <option value="myCloset">My Closet</option>
+                <option value="Calendar">Calendar</option>
                 <option value="home">Home</option>
                 <option value="signOut">Sign Out</option>
             </select>
