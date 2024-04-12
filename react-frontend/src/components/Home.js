@@ -93,10 +93,10 @@ const Home = () => {
       formData.append('image_file', file, file.name);
   
       try {
-         //DEPLOYMENT
-        const response = await fetch("http://20.81.191.105:5000/remove-bg", {
-        //LOCAL
-        //const response = await fetch("http://127.0.0.1:5000/remove-bg", {
+      //    //DEPLOYMENT
+      //   const response = await fetch("http://20.81.191.105:5000/remove-bg", {
+      //   //LOCAL
+      const response = await fetch("http://127.0.0.1:5000/remove-bg", {
           method: "POST",
           body: formData,
         });
