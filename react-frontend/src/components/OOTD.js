@@ -12,7 +12,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { doSignOut } from "../firebase/FirebaseFunctions";
-
 const OOTD = () => {
     const currentUser = useContext(AuthContext);
     const navigate = useNavigate();
@@ -20,7 +19,6 @@ const OOTD = () => {
     const [myClothes, setMyClothes] = useState([]);
     const [selectedClothes, setSelectedClothes] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
-
     useEffect(() => {
       const fetchMyClothes = async () => {
           if (!currentUser) {
@@ -40,7 +38,6 @@ const OOTD = () => {
   
       fetchMyClothes();
   }, [currentUser]); // currentUser is expected to be an object with a currentUser property
-
   useEffect(() => {
     const fetchOOTDs = async () => {
         if (!currentUser || !currentUser.uid) {
@@ -52,7 +49,6 @@ const OOTD = () => {
         const ootdCollectionRef = collection(db, "OOTD");
         const q = query(ootdCollectionRef, where("user_id", "==", currentUser.uid));
         const querySnapshot = await getDocs(q); // getDocs() returns a list of documents
-
         const fetchedOOTDs = [];
         querySnapshot.forEach((doc) => {
             //fetchedOOTDs.push(doc.data().outfit_url); 
@@ -61,16 +57,13 @@ const OOTD = () => {
         });
         setOutfits(fetchedOOTDs); 
     };
-
     fetchOOTDs();
 }, [currentUser]);
-
   const handleSaveOutfit = async () => {
     if (selectedClothes.length === 0 || selectedClothes.length > 6) {
         alert('Please select up to 6 clothing items.');
         return;
     }
-
     const outfitData = {
         urls: selectedClothes.map(clothe => clothe.url),
         categories: selectedClothes.map(clothe => clothe.category),
@@ -78,11 +71,10 @@ const OOTD = () => {
     };
     
     try {
-
-        // //Deployment URL
-        // const response = await axios.post('http://20.81.191.105:5000/outfit', outfitData, {
+        //Deployment URL
+        const response = await axios.post('http://20.81.191.105:5000/outfit', outfitData, {
         //Localhost URL
-        const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
+        //const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
             headers: { 'Content-Type': 'application/json' },
         });
         const newOutfit = {
@@ -96,8 +88,6 @@ const OOTD = () => {
         alert('There was an error saving the outfit.');
     }    
 };
-
-
     // 选择或取消选择衣服时的处理函数
     const handleClotheSelection = (clothe) => {
         const isSelected = selectedClothes.includes(clothe);
@@ -105,13 +95,10 @@ const OOTD = () => {
             ? selectedClothes.filter(selected => selected !== clothe)
             : [...selectedClothes, clothe]);
     };
-
-
     // 删除搭配
     // const deleteOutfit = (outfitUrl) => {
     //     setOutfits(outfits.filter(outfit => outfit !== outfitUrl));
     // };
-
     const deleteOutfit = async (outfitId) => {
         console.log("Deleting outfit with ID:", outfitId); // Debug log
         if (!outfitId) {
@@ -130,18 +117,15 @@ const OOTD = () => {
           }
         }
       };
-
     const handleSignOut = () => {
       doSignOut();
       navigate("/");
       alert("You have been signed out");
     };
-
     const openModalAndResetSelection = () => {
         setSelectedClothes([]); // 这将清空之前的选择
         setModalOpen(true); // 然后打开模态框
     };
-
     // 模态框样式
     const modalStyle = {
         position: 'absolute',
@@ -155,7 +139,6 @@ const OOTD = () => {
         overflow: 'scroll',
         height: '75%',
     };
-
     return (
         <Box sx={{ flexGrow: 1, paddingLeft: '20px' }}>
             {/* Dropdown menu */}
@@ -166,9 +149,10 @@ const OOTD = () => {
                         navigate("/OOTD");
                     }else if(e.target.value === "myCloset") {
                         navigate("/myCloset");
-                    } else if (e.target.value === "Calendar") {
-                        navigate("/calendar");
-                    }else if (e.target.value === "home") {
+                    } 
+                    // else if (e.target.value === "Calendar") {
+                    //     navigate("/calendar");}
+                    else if (e.target.value === "home") {
                         navigate("/");
                     } else if (e.target.value === "signOut") {
                         handleSignOut(); 
@@ -178,7 +162,7 @@ const OOTD = () => {
             >
                 <option value="OOTD">OOTD</option>
                 <option value="myCloset">My Closet</option>
-                <option value="Calendar">Calendar</option>
+                {/* <option value="Calendar">Calendar</option> */}
                 <option value="home">Home</option>
                 <option value="signOut">Sign Out</option>
             </select>
@@ -223,7 +207,6 @@ const OOTD = () => {
             </Card>
         </Grid>
         ))}
-
                 {/* Add new outfit card */}
                 <Grid item xs={4}>
                     <Card sx={{ width: '300px', height: '360px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed' }}  onClick={openModalAndResetSelection} >

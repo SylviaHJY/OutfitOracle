@@ -8,7 +8,7 @@ import Home from "./components/Home";
 import MyCloset from "./components/MyCloset";
 import OOTD from "./components/OOTD";
 import StartPage from "./components/StartPage";
-import CalendarPage from "./components/Calendar";
+// import CalendarPage from "./components/Calendar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
@@ -39,10 +39,10 @@ function App() {
               path="/ootd"
               element={<OOTD />}
             />
-            <Route
+            {/* <Route
               path="/calendar"
               element={<CalendarPage />}
-            />
+            /> */}
           </Routes>
         </div>
         <footer className="App-footer"></footer>
