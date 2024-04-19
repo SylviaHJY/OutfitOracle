@@ -1,0 +1,117 @@
+version: 2.1
+workflows:
+  myApp:
+    jobs:
+      - build-test-python
+      - build-react
+      - publish-python-image:
+          requires:
+            - build-test-python
+      - deploy:
+          requires:
+            - build-test-python
+            - publish-python-image
+            - build-react
+jobs:
+  build-test-python:
+    docker:
+    - image: python:3.9.19-slim
+    steps:
+      - checkout
+      # Whatever you want to do
+      - run:
+          name: copy credential to a file
+          command: |
+            cd backend/src
+            echo $BACKEND_FIREBASE_CREDS	> wardrobe-wizard-105dd-firebase-adminsdk.json
+      - run:
+          name: Build and Test Python app
+          command: |
+            cd backend
+            pip install -r requirements.txt
+            python removeBgTest.py # uncomment to unable test
+            python canvasImageTest.py # uncomment to unable test
+  build-react:
+    docker:
+      - image: node:lts-slim
+    steps:
+      - checkout
+      - run:
+          name: Build .env file
+          command: |
+            touch react-frontend/.env
+            echo $REACT_APP_FIREBASE_KEY >> react-frontend/.env
+            echo $REACT_APP_FIREBASE_DOMAIN >> react-frontend/.env
+            echo $REACT_APP_FIREBASE_PROJECT_ID >> react-frontend/.env
+            echo $REACT_APP_FIREBASE_STORAGE_BUCKET >> react-frontend/.env
+            echo $REACT_APP_FIREBASE_MESSAGING_SENDER_ID >> react-frontend/.env
+            echo $REACT_APP_FIREBASE_APP_ID >> react-frontend/.env
+            echo $REACT_APP_WEATHER_API_ >> react-frontend/.env
+      - run:
+          name: Build React app
+          command: |
+            export CI=false
+            export NODE_OPTIONS=--openssl-legacy-provider
+            npm install --prefix react-frontend
+            npm run build --prefix react-frontend
+            ls -la
+      - persist_to_workspace:
+          root: react-frontend
+          paths:
+            - build/
+    #docker:
+      #- image: node:lts-slim
+    #steps:
+      #- checkout
+      #- run:
+          #name: Build React app
+          #command: |
+            #export CI=false
+            #export NODE_OPTIONS=--openssl-legacy-provider
+            #npm install --prefix react-frontend
+            #npm run build --prefix react-frontend
+            #ls -la
+      #- persist_to_workspace:
+          #root: react-frontend
+          #paths:
+            #- build/
+  publish-python-image:
+    docker:
+      - image: cimg/base:2024.02
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: copy credential to a file
+          command: |
+            cd backend/src
+            echo $BACKEND_FIREBASE_CREDS	> wardrobe-wizard-105dd-firebase-adminsdk.json
+      - run:
+          name: Build and Push python-app Docker image
+          command: |
+            cd backend
+            TAG=latest
+            docker build -t $DOCKERHUB_USERNAME/python-app:$TAG .
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker push $DOCKERHUB_USERNAME/python-app:$TAG
+  deploy:
+    docker:
+      - image: ubuntu:22.04
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./react-frontend
+      - run:
+          name: Deploy App to server
+          command: |
+            apt update && apt install openssh-client -y
+            # Copy Frontend app
+            scp -r -oStrictHostKeyChecking=no react-frontend/build circleci@74.249.112.236:~/
+            scp -oStrictHostKeyChecking=no docker-compose.yml circleci@74.249.112.236:~/
+            scp -oStrictHostKeyChecking=no nginx.conf circleci@74.249.112.236:~/
+            # Copy upgrade script and execute
+            scp -r -oStrictHostKeyChecking=no upgrade.sh circleci@74.249.112.236:~/
+            ssh circleci@74.249.112.236 '/bin/bash upgrade.sh'
