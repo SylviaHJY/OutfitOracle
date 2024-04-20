@@ -87,3 +87,5 @@ Follow these steps to get the project up and running on your local machine:
 7. **Access the Project**
 
    The project will be running at http://localhost:3000. Open this URL in Google Chrome to view the project.
+
+8. **Online Access**
