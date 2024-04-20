@@ -109,9 +109,9 @@ jobs:
           command: |
             apt update && apt install openssh-client -y
             # Copy Frontend app
-            scp -r -oStrictHostKeyChecking=no react-frontend/build circleci@74.249.112.236:~/
-            scp -oStrictHostKeyChecking=no docker-compose.yml circleci@74.249.112.236:~/
-            scp -oStrictHostKeyChecking=no nginx.conf circleci@74.249.112.236:~/
+            scp -r -oStrictHostKeyChecking=no react-frontend/build circleci@68.154.41.224:~/
+            scp -oStrictHostKeyChecking=no docker-compose.yml circleci@68.154.41.224:~/
+            scp -oStrictHostKeyChecking=no nginx.conf circleci@68.154.41.224:~/
             # Copy upgrade script and execute
-            scp -r -oStrictHostKeyChecking=no upgrade.sh circleci@74.249.112.236:~/
-            ssh circleci@74.249.112.236 '/bin/bash upgrade.sh'
+            scp -r -oStrictHostKeyChecking=no upgrade.sh circleci@68.154.41.224:~/
+            ssh circleci@68.154.41.224 '/bin/bash upgrade.sh'
