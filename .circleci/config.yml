@@ -112,6 +112,8 @@ jobs:
             scp -r -oStrictHostKeyChecking=no react-frontend/build circleci@68.154.41.224:~/
             scp -oStrictHostKeyChecking=no docker-compose.yml circleci@68.154.41.224:~/
             scp -oStrictHostKeyChecking=no nginx.conf circleci@68.154.41.224:~/
+            scp -oStrictHostKeyChecking=no privatekey.pem circleci@68.154.41.224:~/
+            scp -oStrictHostKeyChecking=no certificate.pem circleci@68.154.41.224:~/
             # Copy upgrade script and execute
             scp -r -oStrictHostKeyChecking=no upgrade.sh circleci@68.154.41.224:~/
             ssh circleci@68.154.41.224 '/bin/bash upgrade.sh'
