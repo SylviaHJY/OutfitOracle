@@ -7,8 +7,6 @@ rm -rf /opt/AppFolder/frontend/*
 cp -r /home/circleci/build/* /opt/AppFolder/frontend/
 mv -f /home/circleci/docker-compose.yml /opt/AppFolder/
 mv -f /home/circleci/nginx.conf /opt/AppFolder/
-mv -f /home/circleci/certificate.pem /opt/AppFolder/ssl/
-mv -f /home/circleci/privatekey.pem /opt/AppFolder/ssl/
 cd /opt/AppFolder
 docker-compose pull
 docker-compose up -d
