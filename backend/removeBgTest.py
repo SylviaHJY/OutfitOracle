@@ -22,7 +22,7 @@ class TestRemoveBgApi(unittest.TestCase):
         mock_upload_clothing_items.return_value = MagicMock(status_code=200, mimetype='image/png', data=mock_image_data.getvalue())       
 
         # Make a request to your endpoint
-        response = self.app.post('/remove-bg', data={'image_file': (mock_image_data, 'test.png')})
+        response = self.app.post('/api/remove-bg', data={'image_file': (mock_image_data, 'test.png')})
 
         # Assert the response
         self.assertEqual(response.status_code, 200)

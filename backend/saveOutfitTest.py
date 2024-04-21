@@ -15,7 +15,7 @@ class TestSaveOutfitApi(unittest.TestCase):
         }
         
         # Send a POST request to the /outfit endpoint with the JSON data
-        response = self.app.post('/outfit', json=data)
+        response = self.app.post('/api/outfit', json=data)
         
         # Assert that the response status code is 200 (OK)
         self.assertEqual(response.status_code, 200)
