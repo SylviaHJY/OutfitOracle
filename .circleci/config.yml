@@ -105,6 +105,11 @@ jobs:
       - attach_workspace:
           at: ./react-frontend
       - run:
+          name: Create SSL Cert files
+          command: |
+            echo $SSL_CERT_PRIVATEKEY > privatekey.pem
+            echo $SSL_CERT > certificate.pem
+      - run:
           name: Deploy App to server
           command: |
             apt update && apt install openssh-client -y
