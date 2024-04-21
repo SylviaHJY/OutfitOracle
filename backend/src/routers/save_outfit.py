@@ -43,6 +43,7 @@ save_outfit = Blueprint('outfit', __name__)
 
 #     return jsonify({"document_id": document_id, "outfit_url": outfit_url})
 
+# Added /api for the endpoint so that it can be accessed at /api/remove-bg. This is required for the frontend to make requests to the backend over 443.
 @save_outfit.route('/api/outfit', methods=['POST'])
 def upload_clothing_items():
     # 接收JSON数据，包含图片URLs和分类

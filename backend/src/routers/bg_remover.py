@@ -7,7 +7,7 @@ from flask import current_app
 
 # Define Blueprint
 bg_remover = Blueprint('bg_remover', __name__)
-
+# Added /api for the endpoint so that it can be accessed at /api/remove-bg. This is required for the frontend to make requests to the backend over 443.
 @bg_remover.route('/api/remove-bg', methods=['POST'])
 def remove_background():
     try:
