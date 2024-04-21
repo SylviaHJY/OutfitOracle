@@ -74,7 +74,7 @@ const OOTD = () => {
         //Deployment URL
         const response = await axios.post('https://virtualcloset.wardrobewizardcm.com/api/outfit', outfitData, {
         //Localhost URL
-        //const response = await axios.post('http://127.0.0.1:5000/outfit', outfitData, {
+        //const response = await axios.post('http://127.0.0.1:5000/api/outfit', outfitData, {
             headers: { 'Content-Type': 'application/json' },
         });
         const newOutfit = {
