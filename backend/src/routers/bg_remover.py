@@ -8,7 +8,7 @@ from flask import current_app
 # Define Blueprint
 bg_remover = Blueprint('bg_remover', __name__)
 
-@bg_remover.route('/remove-bg', methods=['POST'])
+@bg_remover.route('/api/remove-bg', methods=['POST'])
 def remove_background():
     try:
         # current_app.logger.debug('remove_background() called.')

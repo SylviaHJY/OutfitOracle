@@ -94,7 +94,7 @@ const Home = () => {
   
       try {
       //    //DEPLOYMENT
-        const response = await fetch("https://virtualcloset.wardrobewizardcm.com/remove-bg", {
+        const response = await fetch("https://virtualcloset.wardrobewizardcm.com/api/remove-bg", {
       //   //LOCAL
       //const response = await fetch("http://127.0.0.1:5000/remove-bg", {
           method: "POST",

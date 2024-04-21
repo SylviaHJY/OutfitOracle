@@ -43,7 +43,7 @@ save_outfit = Blueprint('outfit', __name__)
 
 #     return jsonify({"document_id": document_id, "outfit_url": outfit_url})
 
-@save_outfit.route('/outfit', methods=['POST'])
+@save_outfit.route('/api/outfit', methods=['POST'])
 def upload_clothing_items():
     # 接收JSON数据，包含图片URLs和分类
     data = request.json
