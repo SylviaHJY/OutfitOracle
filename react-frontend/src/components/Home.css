@@ -1,19 +1,18 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: white;
-    /*display: flex;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
+  /*display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
     overflow: hidden;*/
+}
 
-  }
-  
 .container {
-    background-color: white;
-    /*display: flex;
+  background-color: white;
+  /*display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -36,7 +35,6 @@ body {
   display: flex;
 }
 
-
 .header-text {
   margin-bottom: 10px;
 }
@@ -50,8 +48,7 @@ body {
   color: white;
 }
 
-.loginMenu{
-
+.loginMenu {
   /*text-align: right;*/
   display: flex;
   float: right;
@@ -59,68 +56,55 @@ body {
   color: white !important;
   margin-left: auto;
   font-weight: 200 !important;
-
-
 }
 
-.loginMenu a{
-
+.loginMenu a {
   color: white;
   margin-right: 20px;
-  
- 
 }
 
-.menuWrapper{
-
+.menuWrapper {
   display: flex;
   align-items: center;
-
 }
 
-.menuWrapper a{
+.menuWrapper a {
   text-decoration: none;
-
 }
 
-.LogOUT{
-
+.LogOUT {
   padding: 12px;
   background-color: white;
   color: black !important;
   text-shadow: 0.5px 0.5px;
 }
 
-
 /*banner*/
 
-.homePageBanner{
+.homePageBanner {
   height: 300px;
   width: 100%;
-
 }
 
-.homePageBannerMain{
-
+.homePageBannerMain {
   position: relative;
   width: 100%;
   height: 300px;
-
 }
 
-.homePageBannerMain h1{
+.homePageBannerMain h1 {
   position: absolute;
   left: 50%;
-  top:70%;
-  transform: translate(-50%,-50%);
+  top: 70%;
+  transform: translate(-50%, -50%);
 }
 
-.containerMiddle{
+.containerMiddle {
   /*background-image: url(../Images/homeMainImage.jpg);*/
   width: 100%;
   height: 100%;
-  background-size: cover; 
-  background-position: center;  
+  background-size: cover;
+  background-position: center;
   /*padding-top: 80px;*/
   padding-bottom: 20px;
   padding-right: 20px;
@@ -140,46 +124,35 @@ body {
   align-items: center;
 }
 
-
-
-
-.container h1{
-  background-color: rgba(255,255,255, 0.5);
+.container h1 {
+  background-color: rgba(255, 255, 255, 0.5);
   color: black;
   padding: 10px;
   border-radius: 5px;
 }
 
-
-.selectCategory{
+.selectCategory {
   background-color: white;
   outline: none;
   /*border: none;*/
   padding: 12px;
   border-radius: 6px;
   font-size: larger;
-
 }
 
-
-
-
-.confirmUpload{
+.confirmUpload {
   margin-bottom: 10px;
 }
 
-
-#saveImage{
+#saveImage {
   margin-bottom: 50px;
-
 }
 
-.confirmUpload img{
+.confirmUpload img {
   display: block;
   margin-right: auto;
   margin-left: auto;
 }
-
 
 /* Choose file input
 .chooseImage {
@@ -196,9 +169,6 @@ body {
   border-color: #87ceeb; 
 }*/
 
-
-
-
 .footer {
   position: fixed;
   bottom: 0;
@@ -210,4 +180,28 @@ body {
   padding: 20px;
   text-align: center;
   height: 20px;
+}
+
+.giveFeedback {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.giveFeedback:hover {
+  color: rgb(0, 72, 139);
+}
+
+.needFAQ {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.needFAQ:hover {
+  color: rgb(0, 72, 139);
 }

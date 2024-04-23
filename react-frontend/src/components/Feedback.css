@@ -1,0 +1,127 @@
+body {
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  margin-top: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header-label {
+  font-size: 18px;
+}
+
+.header-text,
+.header-label,
+.feedback h2,
+.feedback p,
+label,
+textarea {
+  color: #fff;
+}
+
+.feedback {
+  margin-top: 200px;
+  width: 750px;
+  max-width: 750px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feedback h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback p {
+  margin-bottom: 20px;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputBox {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+textarea {
+  width: 700px;
+  max-width: 700px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #000;
+}
+
+.submit-button {
+  width: 300px;
+  max-width: 300px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.goHome {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.goHome:hover {
+  color: rgb(0, 72, 139);
+}
+
+.needFAQ {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.needFAQ:hover {
+  color: rgb(0, 72, 139);
+}

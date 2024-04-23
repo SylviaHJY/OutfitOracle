@@ -135,3 +135,27 @@ body {
 .dontHaveAccount:hover {
   color: rgb(0, 72, 139);
 }
+
+.giveFeedback {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.giveFeedback:hover {
+  color: rgb(0, 72, 139);
+}
+
+.needFAQ {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.needFAQ:hover {
+  color: rgb(0, 72, 139);
+}
