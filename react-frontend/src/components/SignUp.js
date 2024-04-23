@@ -92,6 +92,14 @@ const SignUpPage = () => {
     navigate("/login");
   };
 
+  const redirectToFeedback = () => {
+    navigate("/feedback");
+  };
+
+  const redirectToFAQ = () => {
+    navigate("/faq");
+  };
+
   return (
     <section className="container">
       <header className="header">
@@ -131,7 +139,15 @@ const SignUpPage = () => {
           Already Have an Account?
         </button>
       </div>
-      <footer className="footer">Footer Content Will Go Here</footer>
+      <footer className="footer">
+        <button className="giveFeedback" onClick={redirectToFeedback}>
+          Provide Feedback
+        </button>
+
+        <button className="needFAQ" onClick={redirectToFAQ}>
+          Frequently Asked Questions
+        </button>
+      </footer>
     </section>
   );
 };

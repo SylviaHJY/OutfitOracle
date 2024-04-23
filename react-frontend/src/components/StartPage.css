@@ -192,67 +192,80 @@
     }
     .left-section{
     width: 50%;
-    }
-    .logo-container{
-    display: none
-    }
-    .navigation{
+  }
+  .logo-container {
+    display: none;
+  }
+  .navigation {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
     font-size: 1.5rem;
     line-height: 2rem;
-    }
-    .main-content h1{
+  }
+  .main-content h1 {
     margin-top: 6rem;
-    }
-    .main-content p{
+  }
+  .main-content p {
     width: 75%;
-    }
-    .right-section{
+  }
+  .right-section {
     margin-top: 0;
     width: 50%;
-    }
-    .right-side-logo{
+  }
+  .right-side-logo {
     display: flex;
-    }
-    .start-page-images{
+  }
+  .start-page-images {
     height: 100%;
     background-color: black;
-    }
-    .start-page-image-1{
+  }
+  .start-page-image-1 {
     top: 0;
     height: 45%;
-    }
-    .start-page-image-2{
+  }
+  .start-page-image-2 {
     top: 10rem;
     height: 40%;
-    }
-    .start-page-image-3{
+  }
+  .start-page-image-3 {
     top: 20rem;
     height: 45%;
-    }
-    .start-page-footer{
+  }
+  .start-page-footer {
     padding: 1.25rem;
-    }
-    
-    
-    
-    }
-    
-    
-    
-    /* large screens */
-    @media (min-width: 1024px) {
-    
-    
-    
-    .left-section{
+  }
+}
+
+/* large screens */
+@media (min-width: 1024px) {
+  .left-section {
     width: 58.333333%;
-    }
-    .right-section{
+  }
+  .right-section {
     width: 41.666667%;
-    }
-    
-    
-    
-    }
+  }
+}
+
+.giveFeedback {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.giveFeedback:hover {
+  color: rgb(0, 72, 139);
+}
+
+.needFAQ {
+  background: none;
+  border: none;
+  color: rgb(0, 200, 255);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.needFAQ:hover {
+  color: rgb(0, 72, 139);
+}

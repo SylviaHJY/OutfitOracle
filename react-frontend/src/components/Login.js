@@ -39,6 +39,14 @@ const Login = () => {
     navigate("/register");
   };
 
+  const redirectToFeedback = () => {
+    navigate("/feedback");
+  };
+
+  const redirectToFAQ = () => {
+    navigate("/faq");
+  };
+
   return (
     <section className="container">
       <header className="header">
@@ -83,7 +91,15 @@ const Login = () => {
           Don't Have an Account?
         </button>
       </div>
-      <footer className="footer">Footer Content Will Go Here</footer>
+      <footer className="footer">
+        <button className="giveFeedback" onClick={redirectToFeedback}>
+          Provide Feedback
+        </button>
+
+        <button className="needFAQ" onClick={redirectToFAQ}>
+          Frequently Asked Questions
+        </button>
+      </footer>
     </section>
   );
 };

@@ -1,9 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../firebase/Auth";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { Link, useNavigate} from "react-router-dom";
-import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { getDownloadURL } from "firebase/storage";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 //import Form from 'react-bootstrap/Form';
@@ -18,13 +25,14 @@ const Home = () => {
   const currentUser = useContext(AuthContext);
   const [file, setFile] = useState(null);
   const storage = getStorage();
-  const [userName, setUserName] = useState('');
-  const [category, setCategory] = useState('');
+  const [userName, setUserName] = useState("");
+  const [category, setCategory] = useState("");
   const navigate = useNavigate(); // useNavigate hook
   const [lastUploadedFile, setLastUploadedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null); // for previewing image
   const [processedFile, setProcessedFile] = useState(null); // for uploading to Cloud Storage
   const [uploadSuccess, setUploadSuccess] = useState(false);
+
   const [removeBgProcessing, setRemoveBgProcessing] = useState(''); // for showing processing status
   const [mainCategory, setMainCategory] = useState('');
 
@@ -53,8 +61,7 @@ const Home = () => {
     if (currentUser) {
       setUserName(currentUser.displayName);
     }
-  }
-  , [currentUser]);
+  }, [currentUser]);
 
   const handleSignOut = () => {
     doSignOut();
@@ -62,24 +69,32 @@ const Home = () => {
     alert("You have been signed out");
   };
 
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    if (selectedFile && ["image/jpeg", "image/png", "image/jpg", "image/bmp", "image/webp"].includes(selectedFile.type)) {
+    if (
+      selectedFile &&
+      [
+        "image/jpeg",
+        "image/png",
+        "image/jpg",
+        "image/bmp",
+        "image/webp",
+      ].includes(selectedFile.type)
+    ) {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
         setPreviewUrl(null); // reset preview url
-      }  
+      }
       setFile(selectedFile);
       setProcessedFile(null); // reset processed file
       setUploadSuccess(false); // reset upload success
-      setRemoveBgProcessing(''); // reset processing status
+      setRemoveBgProcessing(""); // reset processing status
     } else {
       alert("Unsupported file type. Please select an image.");
       setFile(null);
     }
   };
-  
+
   // remove background from image
   const handleConfirm = async () => {
     if (!currentUser) {
@@ -87,11 +102,11 @@ const Home = () => {
       return;
     }
     if (file) {
-      setRemoveBgProcessing('Removing image background...'); // set processing status
+      setRemoveBgProcessing("Removing image background..."); // set processing status
       const formData = new FormData();
-      formData.append('size', 'auto');
-      formData.append('image_file', file, file.name);
-  
+      formData.append("size", "auto");
+      formData.append("image_file", file, file.name);
+
       try {
       //    //DEPLOYMENT
       //   const response = await fetch("http://20.81.191.105:5000/remove-bg", {
@@ -100,25 +115,26 @@ const Home = () => {
           method: "POST",
           body: formData,
         });
-  
+
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
-  
+
         const blobData = await response.blob();
-        setProcessedFile(new File([blobData], file.name, { type: 'image/png' }));
+        setProcessedFile(
+          new File([blobData], file.name, { type: "image/png" })
+        );
         setPreviewUrl(URL.createObjectURL(blobData));
         setRemoveBgProcessing('Background removal completed'); // reset processing status
         {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       } catch (error) {
         console.error("Error removing background:", error);
-        setRemoveBgProcessing('Failed to remove background');
+        setRemoveBgProcessing("Failed to remove background");
         alert("Error removing background.");
         {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       }
     }
   };
-  
 
 
   const checkDocumentExists = async (userId) => {
@@ -135,24 +151,27 @@ const Home = () => {
       alert("Please log in to upload files.");
       return;
     }
-  
+
     if (!category) {
       alert("Please select a category for your clothing item.");
       return;
     }
-  
+
     if (!processedFile) {
       alert("No processed file to upload.");
       return;
     }
 
     const exists = await checkDocumentExists(currentUser.uid);
-    const storageRef = ref(storage, `clothes/${currentUser.uid}/${category}/${processedFile.name}`);
+    const storageRef = ref(
+      storage,
+      `clothes/${currentUser.uid}/${category}/${processedFile.name}`
+    );
 
-    try{
+    try {
       const uploadTaskSnapshot = await uploadBytes(storageRef, processedFile);
       const url = await getDownloadURL(uploadTaskSnapshot.ref);
-      
+
       // update or create document in Firestore
       const db = getFirestore();
       const closetRef = doc(db, "closets", currentUser.uid);
@@ -160,11 +179,15 @@ const Home = () => {
         url,
         category,
         name: processedFile.name,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      
+
       // if document exists, update it; otherwise, create it
-      await setDoc(closetRef, { items: exists ? arrayUnion(newClothingItem) : [newClothingItem] }, { merge: true });
+      await setDoc(
+        closetRef,
+        { items: exists ? arrayUnion(newClothingItem) : [newClothingItem] },
+        { merge: true }
+      );
 
       // set last uploaded file for display
       setLastUploadedFile({ category, name: processedFile.name });
@@ -172,11 +195,22 @@ const Home = () => {
       alert("File uploaded and info saved to Firestore successfully!");
       // Reset file input visually by clearing its value
       setFile(null);
-      document.getElementById('fileInput').value = '';
+      document.getElementById("fileInput").value = "";
     } catch (error) {
-      console.error("Error uploading file or saving file info to Firestore:", error);
+      console.error(
+        "Error uploading file or saving file info to Firestore:",
+        error
+      );
       alert("Error uploading file or saving file info.");
     }
+  };
+
+  const redirectToFeedback = () => {
+    navigate("/feedback");
+  };
+
+  const redirectToFAQ = () => {
+    navigate("/faq");
   };
 
   return (
@@ -184,41 +218,45 @@ const Home = () => {
         <header className="headerHP">
           <img src='WWLogo.jpg'/>
         <div className="loginMenu">
-        {currentUser ? (
-          <>
-            <select onChange={(e) => {
-              if (e.target.value === 'myCloset') {
-                navigate('/myCloset');
-              } else if (e.target.value === 'signOut') {
-                handleSignOut();
-              }
-            }} /*style={{background: "none", border: "none", cursor: "pointer"}}*/>
-              <option value="">{`Welcome, ${currentUser.displayName || 'User'}`}</option>
-              <option value="myCloset">Account</option>
-              <option value="myCloset">My Closet</option>
-              <option value="signOut">Sign Out</option>
-            </select>
-          </>
-        ) : (
-          <>
-            <div className="menuWrapper">
-              {/*<Link to="/Home">Home</Link>*/}
-              {/*<Link to="/VirtualCloset">Virtual Closet</Link>*/}
-              {/*<Link to="/AboutUs">About Us</Link>*/}
-              <Link to="/register">Sign Up</Link>
-              <Link to="/login">Login</Link>
-              {/*<Link to="/Home" className="LogOUT">Logout</Link>*/}
-          </div>
-          </>
-        )}
-      </div>
-        </header>
-        <div className="homePageBannerMain">
+          {currentUser ? (
+            <>
+              <select
+                onChange={(e) => {
+                  if (e.target.value === "myCloset") {
+                    navigate("/myCloset");
+                  } else if (e.target.value === "signOut") {
+                    handleSignOut();
+                  }
+                }} /*style={{background: "none", border: "none", cursor: "pointer"}}*/
+              >
+                <option value="">{`Welcome, ${
+                  currentUser.displayName || "User"
+                }`}</option>
+                <option value="myCloset">Account</option>
+                <option value="myCloset">My Closet</option>
+                <option value="signOut">Sign Out</option>
+              </select>
+            </>
+          ) : (
+            <>
+              <div className="menuWrapper">
+                {/*<Link to="/Home">Home</Link>*/}
+                {/*<Link to="/VirtualCloset">Virtual Closet</Link>*/}
+                {/*<Link to="/AboutUs">About Us</Link>*/}
+                <Link to="/register">Sign Up</Link>
+                <Link to="/login">Login</Link>
+                {/*<Link to="/Home" className="LogOUT">Logout</Link>*/}
+              </div>
+            </>
+          )}
+        </div>
+      </header>
+      <div className="homePageBannerMain">
         <img className="homePageBanner" src="/homeMainImagOne.jpg" />
         <h1>Welcome to your AI Closet</h1>
-        </div>
-        <div className="containerMiddle">
-          <div className="containerMiddleForm">
+      </div>
+      <div className="containerMiddle">
+        <div className="containerMiddleForm">
           {/*<div className="containerH1">*/}
           {/*</div>*/}
           <p>Please select a category and upload your clothes</p>  
@@ -255,7 +293,11 @@ const Home = () => {
             )}
           </div> */}
           <div>
-            {removeBgProcessing && <p style={{ color: 'red', fontSize: '12px'}}>{removeBgProcessing}</p>}
+            {removeBgProcessing && (
+              <p style={{ color: "red", fontSize: "12px" }}>
+                {removeBgProcessing}
+              </p>
+            )}
           </div>
           <div className="confirmUpload">
             {previewUrl && (
@@ -265,10 +307,20 @@ const Home = () => {
                 {processedFile &&   <button id="saveImage"  onClick={handleUpload}>Save to Closet</button>}
               </>
             )}
-            {uploadSuccess && <p style={{ color: 'red', fontSize: '12px', marginBottom:'100px'}}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}
+            {uploadSuccess && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginBottom: "100px",
+                }}
+              >
+                Last uploaded file: ({lastUploadedFile?.category}),{" "}
+                {lastUploadedFile?.name} has been saved to your closet!
+              </p>
+            )}
           </div>
           {/*{uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}*/}
-          </div>
         </div>
         {/*<footer className="footer">Footer Content Will Go Here</footer>*/}
         <div className='start-page-footer'>
