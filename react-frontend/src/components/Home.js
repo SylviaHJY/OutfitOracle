@@ -13,6 +13,10 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL } from "firebase/storage";
 import { doSignOut } from "../firebase/FirebaseFunctions";
+//import Form from 'react-bootstrap/Form';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRef } from "react";
+
 
 // import the home page css
 import "./Home.css";
@@ -28,7 +32,29 @@ const Home = () => {
   const [previewUrl, setPreviewUrl] = useState(null); // for previewing image
   const [processedFile, setProcessedFile] = useState(null); // for uploading to Cloud Storage
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [removeBgProcessing, setRemoveBgProcessing] = useState(""); // for showing processing status
+
+  const [removeBgProcessing, setRemoveBgProcessing] = useState(''); // for showing processing status
+  const [mainCategory, setMainCategory] = useState('');
+
+  const CLOTHING_CATEGORIES = {
+    'Tops': ['T-shirts', 'Longsleeves', 'Tank tops', 'Hoodies', 'Blouses', 'Blazers & Vests', 'Sweaters', 'Jackets', 'Coats', 'Dresses', 'Overcoats'],
+    'Bottoms': ['Jeans', 'Pants', 'Agency pant', 'Shorts', 'Skirts','Leggings','Socks'],
+    'Shoes': ['Shoes', 'Sports shoes','Boots', 'Leather shoes', 'Sandals', 'Sneakers', 'Slippers','Heels'],
+    'Accessories': ['Hats', 'Bags', 'Earings','Bracelets','Rings','Necklaces','Belts','Watches','Scarves','Accessories'],
+  };
+
+
+  const bottomRef = useRef(null);
+  
+
+  const handleMainCategoryChange = (e) => {
+    setMainCategory(e.target.value);
+    setCategory(''); // Reset specific category on main category change
+  };
+
+  const handleSpecificCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
 
   useEffect(() => {
     const auth = getAuth();
@@ -39,7 +65,7 @@ const Home = () => {
 
   const handleSignOut = () => {
     doSignOut();
-    navigate("/");
+    navigate('/startPage');
     alert("You have been signed out");
   };
 
@@ -71,6 +97,10 @@ const Home = () => {
 
   // remove background from image
   const handleConfirm = async () => {
+    if (!currentUser) {
+      alert("Please log in to upload files.");
+      return;
+    }
     if (file) {
       setRemoveBgProcessing("Removing image background..."); // set processing status
       const formData = new FormData();
@@ -78,7 +108,10 @@ const Home = () => {
       formData.append("image_file", file, file.name);
 
       try {
-        const response = await fetch("http://127.0.0.1:5000/remove-bg", {
+      //    //DEPLOYMENT
+      //   const response = await fetch("http://20.81.191.105:5000/remove-bg", {
+      //   //LOCAL
+      const response = await fetch("http://127.0.0.1:5000/remove-bg", {
           method: "POST",
           body: formData,
         });
@@ -92,14 +125,17 @@ const Home = () => {
           new File([blobData], file.name, { type: "image/png" })
         );
         setPreviewUrl(URL.createObjectURL(blobData));
-        setRemoveBgProcessing("Background removal completed"); // reset processing status
+        setRemoveBgProcessing('Background removal completed'); // reset processing status
+        {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       } catch (error) {
         console.error("Error removing background:", error);
         setRemoveBgProcessing("Failed to remove background");
         alert("Error removing background.");
+        {/*bottomRef.current.scrollIntoView({ behavior: 'smooth' });*/}
       }
     }
   };
+
 
   const checkDocumentExists = async (userId) => {
     const db = getFirestore();
@@ -109,7 +145,8 @@ const Home = () => {
   };
 
   // upload file after user has confirmed the processed image
-  const handleUpload = async () => {
+  const handleUpload = async (e) => {
+    e.preventDefault();
     if (!currentUser) {
       alert("Please log in to upload files.");
       return;
@@ -177,9 +214,9 @@ const Home = () => {
   };
 
   return (
-    <section className="container">
-      <header className="header">
-        <img src="WWLogo.png" />
+    <section className="containerHP">
+        <header className="headerHP">
+          <img src='WWLogo.jpg'/>
         <div className="loginMenu">
           {currentUser ? (
             <>
@@ -222,57 +259,31 @@ const Home = () => {
         <div className="containerMiddleForm">
           {/*<div className="containerH1">*/}
           {/*</div>*/}
-          <p>Please select a category and upload your clothes</p>
-          <select
-            className="selectCategory"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="T-shirts">T-shirts</option>
-            <option value="Longsleeves">Longsleeves</option>
-            <option value="Tank tops">Tank tops</option>
-            <option value="Hoodies">Hoodies</option>
-            <option value="Blouses">Blouses</option>
-            <option value="Blazers & Vests">Blazers & Vests</option>
-            <option value="Sweaters">Sweaters</option>
-            <option value="Jeans">Jeans</option>
-            <option value="Pants">Pants</option>
-            <option value="Agency pant">Agency pant</option>
-            <option value="Shorts">Shorts</option>
-            <option value="Jackets">Jackets</option>
-            <option value="Coats">Coats</option>
-            <option value="Overcoats">Overcoats</option>
-            <option value="Skirts">Skirts</option>
-            {/* <option value="Suits">Suits</option> */}
-            <option value="Dresses">Dresses</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Boots">Boots</option>
-            <option value="Leather shoes">Leather shoes</option>
-            <option value="Sandals">Sandals</option>
-            <option value="Sneakers">Sneakers</option>
-            <option value="Heels">Heels</option>
-            <option value="Hats">Hats</option>
-            <option value="Bags">Bags</option>
-            <option value="Earings">Earings</option>
-            <option value="Accessories">Accessories</option>
+          <p>Please select a category and upload your clothes</p>  
+          <select value={mainCategory} onChange={handleMainCategoryChange} required>
+          <option value="">Select Main Category</option>
+          {Object.keys(CLOTHING_CATEGORIES).map((category) => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+
+        {mainCategory && (
+          <select value={category} onChange={handleSpecificCategoryChange} required>
+            <option value="">Select Specific Category</option>
+            {CLOTHING_CATEGORIES[mainCategory].map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
           </select>
+        )}
           <p>Please upload your clothes</p>
-          <input
-            className="chooseImage"
-            type="file"
-            onChange={handleFileChange}
-            id="fileInput"
-          />
-          {file && (
-            <>
-              <br />{" "}
-              <button style={{ marginTop: "10px" }} onClick={handleConfirm}>
-                Confirm Image
-              </button>
-            </>
-          )}
+          {/* Bootstrap - requires to run inside frontend folder: npm install react-bootstrap bootstrap */}
+          {/*
+          <Form.Group controlId="formFileLg" className="mb-3">
+          <Form.Label>Upload Image</Form.Label>
+          <Form.Control type="file" size="lg"  onChange={handleFileChange}/>
+          </Form.Group>*/}      
+          <input className="chooseImage" type="file" onChange={handleFileChange} id="fileInput"/>
+          {file && <><br/> <button style={{ marginTop:'10px'}} onClick={handleConfirm}>Confirm Image</button></>}
           <p>Supported formats: .jpg, .png, .jpeg, .bmp, .webp</p>
           {/* <div>
             {lastUploadedFile && (
@@ -291,21 +302,9 @@ const Home = () => {
           <div className="confirmUpload">
             {previewUrl && (
               <>
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  style={{
-                    maxWidth: "400px",
-                    maxHeight: "400px",
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                  }}
-                />
-                {processedFile && (
-                  <button id="saveImage" onClick={handleUpload}>
-                    Save to Closet
-                  </button>
-                )}
+                <img className="imageUploaded" src={previewUrl} alt="Preview" style={{ marginTop:'10px', marginBottom:'20px',}}/>
+                {/*ref={bottomRef} */}
+                {processedFile &&   <button id="saveImage"  onClick={handleUpload}>Save to Closet</button>}
               </>
             )}
             {uploadSuccess && (
@@ -323,18 +322,47 @@ const Home = () => {
           </div>
           {/*{uploadSuccess && <p style={{ color: 'red', fontSize: '12px' }}>Last uploaded file: ({lastUploadedFile?.category}), {lastUploadedFile?.name} has been saved to your closet!</p>}*/}
         </div>
-      </div>
-      <footer className="footer">
-        <button className="giveFeedback" onClick={redirectToFeedback}>
-          Provide Feedback
-        </button>
-
-        <button className="needFAQ" onClick={redirectToFAQ}>
-          Frequently Asked Questions
-        </button>
-      </footer>
+        {/*<footer className="footer">Footer Content Will Go Here</footer>*/}
+        <div className='start-page-footer'>
+          <div className='social-media-icons'>
+            <img src="/facebook.png" alt="facebook icon" />
+            <img src="/instagram.png" alt="instagram icon" />
+            <img src="/linkedin.png" alt="linkedin icon" />
+          </div>
+        </div>
     </section>
   );
 };
 
 export default Home;
+
+
+{/* <select className="selectCategory" value={category} onChange={(e) => setCategory(e.target.value)} required>
+          <option value="">Select Category</option>
+          <option value="T-shirts">T-shirts</option>
+          <option value="Longsleeves">Longsleeves</option>
+          <option value="Tank tops">Tank tops</option>
+          <option value="Hoodies">Hoodies</option>
+          <option value="Blouses">Blouses</option>
+          <option value="Blazers & Vests">Blazers & Vests</option>
+          <option value="Sweaters">Sweaters</option>
+          <option value="Jeans">Jeans</option>
+          <option value="Pants">Pants</option>
+          <option value="Agency pant">Agency pant</option>
+          <option value="Shorts">Shorts</option>
+          <option value="Jackets">Jackets</option>
+          <option value="Coats">Coats</option>
+          <option value="Overcoats">Overcoats</option>
+          <option value="Skirts">Skirts</option>
+          <option value="Dresses">Dresses</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Boots">Boots</option>
+          <option value="Leather shoes">Leather shoes</option>
+          <option value="Sandals">Sandals</option>
+          <option value="Sneakers">Sneakers</option>
+          <option value="Heels">Heels</option>
+          <option value="Hats">Hats</option>
+          <option value="Bags">Bags</option>
+          <option value="Earings">Earings</option>
+          <option value="Accessories">Accessories</option>
+          </select> */}
